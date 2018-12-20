@@ -15,77 +15,6 @@
     // var COMMAFORMAT = d3.format(",");
 
     ///////////////////////// FUNCTIONS TO DO WITH DROPDOWN //////////////////////////
-    // var states = ["National",
-    //                 "──────────",
-    //                 "Alabama",
-    //                 "Alaska",
-    //                 "Arizona",
-    //                 "Arkansas",
-    //                 "California",
-    //                 "Colorado",
-    //                 "Connecticut",
-    //                 "Delaware",
-    //                 "District of Columbia",
-    //                 "Florida",
-    //                 "Georgia",
-    //                 "Hawaii",
-    //                 "Idaho",
-    //                 "Illinois",
-    //                 "Indiana",
-    //                 "Iowa",
-    //                 "Kansas",
-    //                 "Kentucky",
-    //                 "Louisiana",
-    //                 "Maine",
-    //                 "Maryland",
-    //                 "Massachusetts",
-    //                 "Michigan",
-    //                 "Minnesota",
-    //                 "Mississippi",
-    //                 "Missouri",
-    //                 "Montana",
-    //                 "Nebraska",
-    //                 "Nevada",
-    //                 "New Hampshire",
-    //                 "New Jersey",
-    //                 "New Mexico",
-    //                 "New York",
-    //                 "North Carolina",
-    //                 "North Dakota",
-    //                 "Ohio",
-    //                 "Oklahoma",
-    //                 "Oregon",
-    //                 "Pennsylvania",
-    //                 "Rhode Island",
-    //                 "South Carolina",
-    //                 "South Dakota",
-    //                 "Tennessee",
-    //                 "Texas",
-    //                 "Utah",
-    //                 "Vermont",
-    //                 "Virginia",
-    //                 "Washington",
-    //                 "West Virginia",
-    //                 "Wisconsin",
-    //                 "Wyoming"];
-
-    // makeStateDropdown();
-
-    // // populate dropdown with selection options for all states + DC + national
-    // function makeStateDropdown(stateArray) {
-    //     d3.select("#stateDropdown")
-    //         .selectAll("option")
-    //         .data(states)
-    //         .enter()
-    //         .append("option")
-    //         .attr("value", function(d) { return d; } )
-    //         .text(function(d) { return d; });
-
-    //     // disable the second option (i.e., the separator) because it's merely decorative
-    //     d3.select("#stateDropdown option:nth-child(2)")
-    //         .property("disabled", true);
-    // }
-
     // // Turn dropdown into jQuery UI selectmenu
     // $( function() {
     //     $( "#stateDropdown" ).selectmenu({
@@ -185,19 +114,20 @@
 
         pymChild = new pym.Child({renderCallback: drawGraphic });
 
-        // pymChild.onMessage("stateSelected", updatePies);
+        // pymChild.onMessage("selectionChanged", updateChart);
     });
 
     function createChart(parentElement, state, temporal_unit, metric, width, height) {
         var data = getData(state, temporal_unit, metric);
 
         var keys = ['naltrexone_generic', 'naltrexone_brand', 'naloxone_generic', 'naloxone_brand', 'buprenorphine_generic', 'buprenorphine_brand'];
+        // var keys = ['buprenorphine_generic', 'buprenorphine_brand'];
 
         stack.keys(keys);
         // console.log(stack(data));
 
         // set yScale domain based on data selected
-        yScale.domain([0, d3.max(stack(data), function(d) { return d3.max(d, function(d) { return d[1]; }); })]);
+        yScale.domain([0, d3.max(stack(data), function(d) { return d3.max(d, function(d) { return d[1]; }); })]).nice();
 
         var svg = d3.select("#" + parentElement)
             .append("svg")
@@ -231,33 +161,43 @@
         return opioidsData.filter(function(d) { return d.state === state && d.temporal_unit === temporal_unit && d.metric === metric; });
     }
 
-/*
+
     // update tool with selected state's information
-    function updatePies(state) {
+    function updateChart(state) {
+        var data = getData(state, "quarterly", "adjmedamt");
 
-        updatePie(state, "#pctServedPie", "pct_served_center");
-        updatePie(state, "#priorityGroupPie", "pct_onegrp");
-        updatePie(state, "#someNonStdPie", "pct_nonstd_some");
-        updatePie(state, "#majorityNonStdPie", "pct_nonstd_maj");
-        updatePie(state, "#infantsPie", "pct_infants");
-        updatePie(state, "#nonMetroPie", "pct_nonmetro");
+        var keys = ['naltrexone_generic', 'naltrexone_brand', 'naloxone_generic', 'naloxone_brand', 'buprenorphine_generic', 'buprenorphine_brand'];
+        // var keys = ['buprenorphine_generic', 'buprenorphine_brand'];
+        stack.keys(keys);
 
-        populateText(state);
+        // set yScale domain based on data selected
+        yScale.domain([0, d3.max(stack(data), function(d) { return d3.max(d, function(d) { return d[1]; }); })]).nice();
+        updateAxis();
+        console.log(stack(data));
+
+        var layer = d3.select("#areaChart").selectAll(".area")
+            .data(stack(data))
+            .style("fill", function(d) { console.log(d); return colorScale(d.key); })
+            .attr("d", area);
     }
 
-    function updatePie(state, chartId, newVar) {
-        var newData = makePieData(state, newVar);
-
-        d3.select(chartId)
-            .selectAll("path")
-            .data(pie(newData), function(d) { return d.data.label; })
+    function updateAxis() {
+        d3.select("#areaChart .axis.axis--y")
             .transition()
-            .duration(1000)
-            .attrTween("d", arcTween);
-
-        d3.select(chartId + " .totalPct")
-            .text(PCTFORMAT(newData[0]["val"]));
+            .call(d3.axisLeft(yScale));
     }
-*/
     //////////////////////////////////////////////////////////////////////////
+
+    //////////////////////// GET USER SELECTIONS /////////////////////////////
+    d3.select("#stateDropdown").on("change", getSelections);
+
+    function getSelections() {
+        var geo = getGeography();
+
+        updateChart(geo);
+    }
+
+    function getGeography() {
+        return d3.select("#stateDropdown").property("value");
+    }
 })();
