@@ -12,8 +12,8 @@
     </head>
     <body>
     <!-- Select state by dropdown or clicking on a map -->
-    <section class="stateSelection">
-        <div class="dropdownSection">
+    <section class="userSelections">
+        <div class="stateSelection dropdown">
             <label for="stateDropdown">Location: </label>
             <select id="stateDropdown" required>
                 <option value="National">National</option>
@@ -69,6 +69,12 @@
                 <option value="WI">Wisconsin</option>
                 <option value="WY">Wyoming</option>
             </select>
+        </div>
+        <div class="timeSelection radioBtns">
+            <input type="radio" id="quarterlyBtn" name="timeUnit" value="quarterly" checked>
+            <label for="quarterly">Quarterly</label>
+            <input type="radio" id="annualBtn" name="timeUnit" value="annual">
+            <label for="annual">Annual</label>
         </div>
     </section>
 

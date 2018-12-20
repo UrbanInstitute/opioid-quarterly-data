@@ -1,7 +1,7 @@
 (function() {
     var pymChild = null;
 
-    var margin = {left: 70, top: 10, right: 0, bottom: 40};
+    var margin = {left: 80, top: 10, right: 0, bottom: 40};
 
     // var selectedState;
     var opioidsData;
@@ -160,8 +160,8 @@
 
 
     // update tool with selected state's information
-    function updateChart(state) {
-        var data = getData(state, "quarterly", "adjmedamt");
+    function updateChart(state, timeUnit) {
+        var data = getData(state, timeUnit, "adjmedamt");
 
         var keys = ['naltrexone_generic', 'naltrexone_brand', 'naloxone_generic', 'naloxone_brand', 'buprenorphine_generic', 'buprenorphine_brand'];
         // var keys = ['naltrexone_generic', 'naltrexone_brand'];
@@ -194,14 +194,20 @@
 
     //////////////////////// GET USER SELECTIONS /////////////////////////////
     d3.select("#stateDropdown").on("change", getSelections);
+    d3.selectAll("input[name='timeUnit']").on("change", getSelections);
 
     function getSelections() {
         var geo = getGeography();
-
-        updateChart(geo);
+        var timeUnit = getTimeUnit();
+        // console.log(timeUnit);
+        updateChart(geo, timeUnit);
     }
 
     function getGeography() {
         return d3.select("#stateDropdown").property("value");
+    }
+
+    function getTimeUnit() {
+        return d3.selectAll("input[name='timeUnit']:checked").property("value");
     }
 })();
