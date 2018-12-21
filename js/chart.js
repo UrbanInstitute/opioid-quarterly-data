@@ -87,16 +87,16 @@
                 temporal_unit: d.temporal_unit,
                 date: parseDate(d.date),
                 metric: d.metric,
-                // all_percap: +d.all_percap,
-                // all_total: +d.all_total,
-                // buprenorphine_percap: +d.buprenorphine_percap,
-                // buprenorphine_total: +d.buprenorphine_percap,
-                // naloxone_percap: +d.naloxone_percap,
-                // naloxone_total: +d.naloxone_total,
-                // naltrexone_percap: +d.naltrexone_percap,
-                // naltrexone_total: +d.naltrexone_total,
-                // all_brand: +d.all_brand,
-                // all_generic: +d.all_generic,
+                all_percap: +d.all_percap,
+                all_total: +d.all_total,
+                buprenorphine_percap: +d.buprenorphine_percap,
+                buprenorphine_total: +d.buprenorphine_percap,
+                naloxone_percap: +d.naloxone_percap,
+                naloxone_total: +d.naloxone_total,
+                naltrexone_percap: +d.naltrexone_percap,
+                naltrexone_total: +d.naltrexone_total,
+                all_brand: +d.all_brand,
+                all_generic: +d.all_generic,
                 buprenorphine_brand: +d.buprenorphine_brand,
                 buprenorphine_generic: +d.buprenorphine_generic,
                 naloxone_brand: +d.naloxone_brand,
@@ -160,8 +160,8 @@
 
 
     // update tool with selected state's information
-    function updateChart(state, timeUnit) {
-        var data = getData(state, timeUnit, "adjmedamt");
+    function updateChart(metric, state, timeUnit) {
+        var data = getData(state, timeUnit, metric);
 
         var keys = ['naltrexone_generic', 'naltrexone_brand', 'naloxone_generic', 'naloxone_brand', 'buprenorphine_generic', 'buprenorphine_brand'];
         // var keys = ['naltrexone_generic', 'naltrexone_brand'];
@@ -193,14 +193,20 @@
     //////////////////////////////////////////////////////////////////////////
 
     //////////////////////// GET USER SELECTIONS /////////////////////////////
+    d3.selectAll("input[name='metric']").on("change", getSelections);
     d3.select("#stateDropdown").on("change", getSelections);
     d3.selectAll("input[name='timeUnit']").on("change", getSelections);
 
     function getSelections() {
+        var metric = getMetric();
         var geo = getGeography();
         var timeUnit = getTimeUnit();
-        // console.log(timeUnit);
-        updateChart(geo, timeUnit);
+        // console.log(metric);
+        updateChart(metric, geo, timeUnit);
+    }
+
+    function getMetric() {
+        return d3.selectAll("input[name='metric']:checked").property("value");
     }
 
     function getGeography() {

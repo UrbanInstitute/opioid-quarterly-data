@@ -13,6 +13,12 @@
     <body>
     <!-- Select state by dropdown or clicking on a map -->
     <section class="userSelections">
+        <div class="metricSelection radioBtns">
+            <input type="radio" id="medicaidSpend" name="metric" value="adjmedamt" checked>
+            <label for="medicaidSpend">Medicaid spending</label>
+            <input type="radio" id="total_rx" name="metric" value="rx">
+            <label for="total_rx">Total prescriptions</label>
+        </div>
         <div class="stateSelection dropdown">
             <label for="stateDropdown">Location: </label>
             <select id="stateDropdown" required>
