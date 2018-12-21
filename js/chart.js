@@ -90,7 +90,7 @@
                 all_percap: +d.all_percap,
                 all_total: +d.all_total,
                 buprenorphine_percap: +d.buprenorphine_percap,
-                buprenorphine_total: +d.buprenorphine_percap,
+                buprenorphine_total: +d.buprenorphine_total,
                 naloxone_percap: +d.naloxone_percap,
                 naloxone_total: +d.naloxone_total,
                 naltrexone_percap: +d.naltrexone_percap,
@@ -160,15 +160,16 @@
 
 
     // update tool with selected state's information
-    function updateChart(metric, state, timeUnit) {
+    function updateChart(metric, state, timeUnit, keys) {
         var data = getData(state, timeUnit, metric);
 
-        var keys = ['naltrexone_generic', 'naltrexone_brand', 'naloxone_generic', 'naloxone_brand', 'buprenorphine_generic', 'buprenorphine_brand'];
+        // var keys = ['naltrexone_generic', 'naltrexone_brand', 'naloxone_generic', 'naloxone_brand', 'buprenorphine_generic', 'buprenorphine_brand'];
         // var keys = ['naltrexone_generic', 'naltrexone_brand'];
         stack.keys(keys);
 
         // set yScale domain based on data selected
         yScale.domain([0, d3.max(stack(data), function(d) { return d3.max(d, function(d) { return d[1]; }); })]).nice();
+        // console.log(yScale.domain());
         updateAxis();
         // console.log(stack(data));
 
@@ -211,10 +212,13 @@
         if(perCapita) {
             keys = drugs.map(function(drug) { return drug + "_percap"; });
             // if per capita is checked, need to uncheck the generic/brand checkboxes
-            // console.log(keys);
         }
+        else {
+            keys = drugs.map(function(drug) { return drug + "_total"; });
+        }
+        console.log(keys);
         //console.log(perCapita);
-        updateChart(metric, geo, timeUnit);
+        updateChart(metric, geo, timeUnit, keys);
     }
 
     function getDrug() {
@@ -224,23 +228,23 @@
         // console.log(checked);
 
         // all drugs selected -> deselect one drug -> "all drugs" box should be unchecked
-        if(d3.select("#all").property("checked") && checked.length < 4) {
-            uncheckBox("#all");
-        }
+        // if(d3.select("#all").property("checked") && checked.length < 4) {
+        //     uncheckBox("#all");
+        // }
         // "all drugs" deselected -> "all drugs" selected -> all individual drugs should be selected
         // "all drugs" selected -> "all drugs" deselected -> all individual drugs should be deselected
 
 
 
         for(var i = 0; i < checked.length; i++) {
-            if(checked[i].value === "all") {
-                checkAllDrugBoxes();
-                selectedDrugs = ["buprenorphine", "naltrexone", "naloxone"];
-                break;
-            }
-            else {
+            // if(checked[i].value === "all") {
+            //     checkAllDrugBoxes();
+            //     selectedDrugs = ["buprenorphine", "naltrexone", "naloxone"];
+            //     break;
+            // }
+            // else {
                 selectedDrugs.push(checked[i].value);
-            }
+            // }
         };
         return selectedDrugs;
     }
