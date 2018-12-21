@@ -170,7 +170,7 @@
         // set yScale domain based on data selected
         yScale.domain([0, d3.max(stack(data), function(d) { return d3.max(d, function(d) { return d[1]; }); })]).nice();
         updateAxis();
-        console.log(stack(data));
+        // console.log(stack(data));
 
         var layer = d3.select("#areaChart svg g").selectAll(".area")
             .data(stack(data), function(d) { return d.key; });
@@ -193,16 +193,60 @@
     //////////////////////////////////////////////////////////////////////////
 
     //////////////////////// GET USER SELECTIONS /////////////////////////////
+    d3.selectAll("input[name='perCapita']").on("change", getSelections);
     d3.selectAll("input[name='metric']").on("change", getSelections);
+    d3.selectAll("input[name='drug']").on("change", getSelections);
     d3.select("#stateDropdown").on("change", getSelections);
     d3.selectAll("input[name='timeUnit']").on("change", getSelections);
 
     function getSelections() {
+        var perCapita = getPerCapita();
         var metric = getMetric();
+        var drugs = getDrug();
         var geo = getGeography();
         var timeUnit = getTimeUnit();
-        // console.log(metric);
+
+        // build array of keys
+        var keys = [];
+        if(perCapita) {
+            keys = drugs.map(function(drug) { return drug + "_percap"; });
+            // if per capita is checked, need to uncheck the generic/brand checkboxes
+            // console.log(keys);
+        }
+        //console.log(perCapita);
         updateChart(metric, geo, timeUnit);
+    }
+
+    function getDrug() {
+        var selectedDrugs = [];
+
+        var checked = d3.selectAll("input[name='drug']:checked").nodes();
+        // console.log(checked);
+
+        // all drugs selected -> deselect one drug -> "all drugs" box should be unchecked
+        if(d3.select("#all").property("checked") && checked.length < 4) {
+            uncheckBox("#all");
+        }
+        // "all drugs" deselected -> "all drugs" selected -> all individual drugs should be selected
+        // "all drugs" selected -> "all drugs" deselected -> all individual drugs should be deselected
+
+
+
+        for(var i = 0; i < checked.length; i++) {
+            if(checked[i].value === "all") {
+                checkAllDrugBoxes();
+                selectedDrugs = ["buprenorphine", "naltrexone", "naloxone"];
+                break;
+            }
+            else {
+                selectedDrugs.push(checked[i].value);
+            }
+        };
+        return selectedDrugs;
+    }
+
+    function getPerCapita() {
+        return d3.select("#perCapita").property("checked");
     }
 
     function getMetric() {
@@ -215,5 +259,26 @@
 
     function getTimeUnit() {
         return d3.selectAll("input[name='timeUnit']:checked").property("value");
+    }
+
+    /////////////////////// checkbox functions //////////////////////////
+    function checkAllDrugBoxes() {
+        checkBox("#buprenorphine");
+        checkBox("#naltrexone");
+        checkBox("#naloxone");
+    }
+
+    function uncheckAllDrugBoxes() {
+        uncheckBox("#buprenorphine");
+        uncheckBox("#naltrexone");
+        uncheckBox("#naloxone");
+    }
+
+    function checkBox(id) {
+        d3.select(id).property("checked", true);
+    }
+
+    function uncheckBox(id) {
+        d3.select(id).property("checked", false);
     }
 })();

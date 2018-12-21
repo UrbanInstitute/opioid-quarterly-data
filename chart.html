@@ -14,10 +14,24 @@
     <!-- Select state by dropdown or clicking on a map -->
     <section class="userSelections">
         <div class="metricSelection radioBtns">
+            <!-- Per capita checkbox -->
+            <input type="checkbox" id="perCapita" name="perCapita" value="percap">
+            <label for="perCapita">per capita</label>
+            <!-- Metric radio buttons -->
             <input type="radio" id="medicaidSpend" name="metric" value="adjmedamt" checked>
             <label for="medicaidSpend">Medicaid spending</label>
             <input type="radio" id="total_rx" name="metric" value="rx">
             <label for="total_rx">Total prescriptions</label>
+        </div>
+        <div class="drugSelection checkboxes">
+            <input type="checkbox" id="all" name="drug" value="all">
+            <label for="all">All drugs</label>
+            <input type="checkbox" id="buprenorphine" name="drug" value="buprenorphine" checked>
+            <label for="buprenorphine">Buprenorphine</label>
+            <input type="checkbox" id="naloxone" name="drug" value="naloxone" checked>
+            <label for="naloxone">Naloxone</label>
+            <input type="checkbox" id="naltrexone" name="drug" value="naltrexone" checked>
+            <label for="naltrexone">Naltrexone</label>
         </div>
         <div class="stateSelection dropdown">
             <label for="stateDropdown">Location: </label>
