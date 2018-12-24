@@ -11,7 +11,7 @@
         <!-- <link rel="stylesheet" type="text/css" href="css/main.css"> -->
     </head>
     <body>
-    <!-- Select state by dropdown or clicking on a map -->
+    <!-- User Selections -->
     <section class="userSelections">
         <div class="metricSelection radioBtns">
             <!-- Per capita checkbox -->
@@ -25,13 +25,21 @@
         </div>
         <div class="drugSelection checkboxes">
 <!--             <input type="checkbox" id="all" name="drug" value="all" checked>
-            <label for="all">All drugs</label>
- -->            <input type="checkbox" id="buprenorphine" name="drug" value="buprenorphine" checked>
+            <label for="all">All drugs</label>  -->
+            <input type="checkbox" id="buprenorphine" name="drug" value="buprenorphine" checked>
             <label for="buprenorphine">Buprenorphine</label>
             <input type="checkbox" id="naloxone" name="drug" value="naloxone" checked>
             <label for="naloxone">Naloxone</label>
             <input type="checkbox" id="naltrexone" name="drug" value="naltrexone" checked>
             <label for="naltrexone">Naltrexone</label>
+        </div>
+        <div class="brandGenericSelection checkboxes">
+<!--             <input type="checkbox" id="both" name="brandgeneric" value="both" checked>
+            <label for="both">Brand and generic</label> -->
+            <input type="checkbox" id="brand" name="brandgeneric" value="brand" checked>
+            <label for="brand">Brand</label>
+            <input type="checkbox" id="generic" name="brandgeneric" value="generic" checked>
+            <label for="generic">Generic</label>
         </div>
         <div class="stateSelection dropdown">
             <label for="stateDropdown">Location: </label>
@@ -99,8 +107,10 @@
     </section>
 
 
-        <!-- chart -->
+    <!-- chart -->
+    <section class="chart">
         <div id="areaChart"></div>
+    </section>
 
         <script src="js/vendor/pym.v1.min.js"></script>
         <script src="js/vendor/d3.v4.min.js"></script>

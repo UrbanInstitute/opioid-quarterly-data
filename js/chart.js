@@ -64,8 +64,8 @@
         var width = containerWidth - margin["left"] - margin["right"],
             height = width * 0.75 - margin["top"] - margin["bottom"];
 
-        // clear chart divs before redrawing maps
-        $(".chart").empty();
+        // clear chart div before redrawing
+        $("#areaChart").empty();
 
         // set up scales based on iframe width and height
         xScale.domain(d3.extent(opioidsData, function(d) { return d.date; })).range([0, width]);
@@ -87,16 +87,16 @@
                 temporal_unit: d.temporal_unit,
                 date: parseDate(d.date),
                 metric: d.metric,
-                all_percap: +d.all_percap,
-                all_total: +d.all_total,
+                // all_percap: +d.all_percap,
+                // all_total: +d.all_total,
                 buprenorphine_percap: +d.buprenorphine_percap,
                 buprenorphine_total: +d.buprenorphine_total,
                 naloxone_percap: +d.naloxone_percap,
                 naloxone_total: +d.naloxone_total,
                 naltrexone_percap: +d.naltrexone_percap,
                 naltrexone_total: +d.naltrexone_total,
-                all_brand: +d.all_brand,
-                all_generic: +d.all_generic,
+                // all_brand: +d.all_brand,
+                // all_generic: +d.all_generic,
                 buprenorphine_brand: +d.buprenorphine_brand,
                 buprenorphine_generic: +d.buprenorphine_generic,
                 naloxone_brand: +d.naloxone_brand,
@@ -197,6 +197,7 @@
     d3.selectAll("input[name='perCapita']").on("change", getSelections);
     d3.selectAll("input[name='metric']").on("change", getSelections);
     d3.selectAll("input[name='drug']").on("change", getSelections);
+    d3.selectAll("input[name='brandgeneric']").on("change", getSelections);
     d3.select("#stateDropdown").on("change", getSelections);
     d3.selectAll("input[name='timeUnit']").on("change", getSelections);
 
@@ -204,6 +205,7 @@
         var perCapita = getPerCapita();
         var metric = getMetric();
         var drugs = getDrug();
+        var brandgeneric = getBrandGeneric();
         var geo = getGeography();
         var timeUnit = getTimeUnit();
 
@@ -213,10 +215,22 @@
             keys = drugs.map(function(drug) { return drug + "_percap"; });
             // if per capita is checked, need to uncheck the generic/brand checkboxes
         }
+        else if(brandgeneric.length > 0) {
+            if(brandgeneric.length === 2) {
+                drugs.forEach(function(drug) {
+                    keys.push(drug + "_generic");
+                    keys.push(drug + "_brand");
+                });
+            }
+            else {
+                keys = drugs.map(function(drug) { return drug + "_" + brandgeneric[0]; });
+            }
+        }
         else {
             keys = drugs.map(function(drug) { return drug + "_total"; });
         }
         console.log(keys);
+        // console.log(brandgeneric);
         //console.log(perCapita);
         updateChart(metric, geo, timeUnit, keys);
     }
@@ -255,6 +269,21 @@
 
     function getMetric() {
         return d3.selectAll("input[name='metric']:checked").property("value");
+    }
+
+    function getBrandGeneric() {
+        var selectedBG = [];
+        var checked = d3.selectAll("input[name='brandgeneric']:checked").nodes();
+
+        if(checked.length == 2) {
+            return ['brand', 'generic'];
+        }
+        else if(checked.length == 1) {
+            return [checked[0].value];
+        }
+        else {
+            return [];
+        }
     }
 
     function getGeography() {
