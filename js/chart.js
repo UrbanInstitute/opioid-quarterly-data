@@ -120,7 +120,7 @@
     function createChart(parentElement, state, temporal_unit, metric, width, height) {
         var data = getData(state, temporal_unit, metric);
 
-        var keys = ['naltrexone_generic', 'naltrexone_brand', 'naloxone_generic', 'naloxone_brand', 'buprenorphine_generic', 'buprenorphine_brand'];
+        var keys = ['buprenorphine_generic', 'buprenorphine_brand', 'naloxone_generic', 'naloxone_brand', 'naltrexone_generic', 'naltrexone_brand'];
         // var keys = ['buprenorphine_generic', 'buprenorphine_brand'];
 
         stack.keys(keys);
