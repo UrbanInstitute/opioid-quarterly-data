@@ -32,6 +32,7 @@ def qtrToDate(df):
     return pd.to_datetime(str(df.year) + "-" + str(month) + "-01", format="%Y-%m-%d")
 
 total_qtr.replace({'drugtype': 'bup'}, 'buprenorphine', inplace = True)
+total_qtr = total_qtr[total_qtr.drugtype != 'all']
 total_qtr['temporal_unit'] = 'quarterly'
 total_qtr['date'] = total_qtr.apply(qtrToDate, axis = 1)
 total_qtr.drop(['genericind', 'year', 'quarter'], axis = 1, inplace = True)
@@ -45,6 +46,7 @@ total_qtr_long['drug_type'] = total_qtr_long['drugtype'] + "_" + total_qtr_long[
 total_qtr_final = total_qtr_long.pivot_table(index=['state', 'temporal_unit', 'date', 'metric'], columns = 'drug_type', values = 'value')
 
 generic_brand_qtr.replace({'drugtype': 'bup'}, 'buprenorphine', inplace = True)
+generic_brand_qtr = generic_brand_qtr[generic_brand_qtr.drugtype != 'all']
 generic_brand_qtr['temporal_unit'] = 'quarterly'
 generic_brand_qtr['date'] = generic_brand_qtr.apply(qtrToDate, axis = 1)
 generic_brand_qtr.drop(['year', 'quarter'], axis = 1, inplace = True)
@@ -56,6 +58,7 @@ generic_brand_qtr_final = generic_brand_qtr_long.pivot_table(index=['state', 'te
 quarterly_final = total_qtr_final.join(generic_brand_qtr_final).reset_index()
 
 total_yr.replace({'drugtype': 'bup'}, 'buprenorphine', inplace = True)
+total_yr = total_yr[total_yr.drugtype != 'all']
 total_yr['temporal_unit'] = 'annual'
 total_yr['date'] = pd.to_datetime(total_yr['year'].astype(str), format="%Y")
 total_yr.drop(['genericind', 'year', 'quarter'], axis = 1, inplace = True)
@@ -69,6 +72,7 @@ total_yr_long['drug_type'] = total_yr_long['drugtype'] + "_" + total_yr_long['ty
 total_yr_final = total_yr_long.pivot_table(index=['state', 'temporal_unit', 'date', 'metric'], columns = 'drug_type', values = 'value')
 
 generic_brand_yr.replace({'drugtype': 'bup'}, 'buprenorphine', inplace = True)
+generic_brand_yr = generic_brand_yr[generic_brand_yr.drugtype != 'all']
 generic_brand_yr['temporal_unit'] = 'annual'
 generic_brand_yr['date'] = pd.to_datetime(generic_brand_yr['year'].astype(str), format="%Y")
 generic_brand_yr.drop(['year', 'quarter'], axis = 1, inplace = True)
