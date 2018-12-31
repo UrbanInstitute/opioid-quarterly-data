@@ -31,6 +31,12 @@ def qtrToDate(df):
     month = (df.quarter * 3) - 2
     return pd.to_datetime(str(df.year) + "-" + str(month) + "-01", format="%Y-%m-%d")
 
+# filter out years prior to 2010
+total_qtr = total_qtr[total_qtr['year'] >= 2010]
+generic_brand_qtr = generic_brand_qtr[generic_brand_qtr['year'] >= 2010]
+total_yr = total_yr[total_yr['year'] >= 2010]
+generic_brand_yr = generic_brand_yr[generic_brand_yr['year'] >= 2010]
+
 total_qtr.replace({'drugtype': 'bup'}, 'buprenorphine', inplace = True)
 total_qtr = total_qtr[total_qtr.drugtype != 'all']
 total_qtr['temporal_unit'] = 'quarterly'
