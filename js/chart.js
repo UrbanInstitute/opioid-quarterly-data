@@ -56,12 +56,12 @@
 
     function drawGraphic(containerWidth) {
         // set up chart dimensions
-        if (containerWidth == undefined || isNaN(containerWidth) || containerWidth > 688) {
-            containerWidth = 688;
+        if (containerWidth == undefined || isNaN(containerWidth) || containerWidth > 960) {
+            containerWidth = 960;
         }
 
         // var width = Math.min(containerWidth, 200 - margin["left"] - margin["right"]),
-        var width = containerWidth - margin["left"] - margin["right"],
+        var width = containerWidth - 240 - margin["left"] - margin["right"],
             height = width * 0.75 - margin["top"] - margin["bottom"];
 
         // clear chart div before redrawing

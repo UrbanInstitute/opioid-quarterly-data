@@ -11,49 +11,74 @@
         <!-- <link rel="stylesheet" type="text/css" href="css/main.css"> -->
     </head>
     <body>
+
+        <div class="main">
     <!-- User Selections -->
     <section class="userSelections">
-        <div class="metricSelection radioBtns">
-            <!-- Per capita checkbox -->
-            <input type="checkbox" id="perCapita" name="perCapita" value="percap">
-            <label for="perCapita">per capita</label>
-            <!-- Metric radio buttons -->
-            <input type="radio" id="medicaidSpend" name="metric" value="adjmedamt" checked>
-            <label for="medicaidSpend">Medicaid spending</label>
-            <input type="radio" id="total_rx" name="metric" value="rx">
-            <label for="total_rx">Total prescriptions</label>
+        <div class="metricSelection radioBtns selectionDiv">
+            <h3 class="categoryLabel">Clear category label</h3>
+            <div class="selection">
+                <!-- Per capita checkbox -->
+                <input type="checkbox" id="perCapita" name="perCapita" value="percap">
+                <label for="perCapita">per capita</label>
+            </div>
+            <div class="selection">
+                <!-- Metric radio buttons -->
+                <ul class="outerList">
+                    <li>
+                        <input type="radio" id="medicaidSpend" name="metric" value="adjmedamt" checked>
+                        <label for="medicaidSpend">Medicaid spending</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="total_rx" name="metric" value="rx">
+                        <label for="total_rx">Total prescriptions</label>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="drugSelection checkboxes">
-            <ul class="checkboxList">
-                <li>
-                    <input type="checkbox" id="all" name="drug" value="all" checked>
-                    <label for="all">All drugs</label>
-                    <ul>
-                        <li>
-                            <input type="checkbox" id="buprenorphine" name="drug" value="buprenorphine" class="drugSuboption" checked>
-                            <label for="buprenorphine">Buprenorphine</label>
-                        </li>
-                        <li>
-                            <input type="checkbox" id="naloxone" name="drug" value="naloxone" class="drugSuboption" checked>
-                            <label for="naloxone">Naloxone</label>
-                        </li>
-                        <li>
-                            <input type="checkbox" id="naltrexone" name="drug" value="naltrexone" class="drugSuboption" checked>
-                            <label for="naltrexone">Naltrexone</label>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+        <hr>
+        <div class="drugSelection checkboxes selectionDiv">
+            <h3 class="categoryLabel">Clear category label</h3>
+            <div class="selection">
+                <ul class="outerList">
+                    <li>
+                        <input type="checkbox" id="all" name="drug" value="all" checked>
+                        <label for="all">All drugs</label>
+                        <ul class="innerList">
+                            <li>
+                                <input type="checkbox" id="buprenorphine" name="drug" value="buprenorphine" class="drugSuboption" checked>
+                                <label for="buprenorphine">Buprenorphine</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="naloxone" name="drug" value="naloxone" class="drugSuboption" checked>
+                                <label for="naloxone">Naloxone</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="naltrexone" name="drug" value="naltrexone" class="drugSuboption" checked>
+                                <label for="naltrexone">Naltrexone</label>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="brandGenericSelection checkboxes selection">
+                <ul class="outerList">
+    <!--             <input type="checkbox" id="both" name="brandgeneric" value="both" checked>
+                <label for="both">Brand and generic</label> -->
+                    <li>
+                        <input type="checkbox" id="brand" name="brandgeneric" value="brand" checked>
+                        <label for="brand">Brand</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="generic" name="brandgeneric" value="generic" checked>
+                        <label for="generic">Generic</label>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="brandGenericSelection checkboxes">
-<!--             <input type="checkbox" id="both" name="brandgeneric" value="both" checked>
-            <label for="both">Brand and generic</label> -->
-            <input type="checkbox" id="brand" name="brandgeneric" value="brand" checked>
-            <label for="brand">Brand</label>
-            <input type="checkbox" id="generic" name="brandgeneric" value="generic" checked>
-            <label for="generic">Generic</label>
-        </div>
-        <div class="stateSelection dropdown">
+        <hr>
+        <div class="stateSelection dropdown selectionDiv">
+            <h3 class="categoryLabel">Clear category label</h3>
             <label for="stateDropdown">Location: </label>
             <select id="stateDropdown" required>
                 <option value="National">National</option>
@@ -110,19 +135,30 @@
                 <option value="WY">Wyoming</option>
             </select>
         </div>
-        <div class="timeSelection radioBtns">
-            <input type="radio" id="quarterlyBtn" name="timeUnit" value="quarterly" checked>
-            <label for="quarterly">Quarterly</label>
-            <input type="radio" id="annualBtn" name="timeUnit" value="annual">
-            <label for="annual">Annual</label>
+        <hr>
+        <div class="timeSelection radioBtns selectionDiv">
+            <h3 class="categoryLabel">Clear category label</h3>
+            <ul class="outerList">
+                <li>
+                    <input type="radio" id="quarterlyBtn" name="timeUnit" value="quarterly" checked>
+                    <label for="quarterly">Quarterly</label>
+                </li>
+                <li>
+                    <input type="radio" id="annualBtn" name="timeUnit" value="annual">
+                    <label for="annual">Annual</label>
+                </li>
+            </ul>
         </div>
     </section>
 
 
     <!-- chart -->
     <section class="chart">
+        <h3>Chart title here</h3>
         <div id="areaChart"></div>
     </section>
+
+    </div>
 
         <script src="js/vendor/pym.v1.min.js"></script>
         <script src="js/vendor/d3.v4.min.js"></script>

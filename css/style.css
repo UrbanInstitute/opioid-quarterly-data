@@ -1,0 +1,146 @@
+body{
+  font-family: Lato;
+  font-size: 16px;
+  background: none !important;
+  /*margin: 0;*/
+}
+
+text {
+    font-family: Lato;
+}
+
+.container {
+  max-width: 960px;
+  width: 100%;
+}
+
+.main {
+    display: inline-block;
+}
+
+h1 {
+    font-weight: normal;
+    font-size: 30px;
+}
+
+h2 {
+    font-weight: bold;
+    font-size: 24px;
+    padding: 40px 0 25px 0;
+}
+
+h3.categoryLabel {
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: bold;
+    line-height: 21px;
+    color: #000;
+    /*margin-top: 0;*/
+}
+
+h4 {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+hr {
+    margin: 30px 0;
+}
+
+section.userSelections {
+    width: 200px;
+    margin-right: 20px;
+    float: left;
+}
+
+section.chart {
+    float: left;
+}
+
+.selectionDiv {
+    width: 100%;
+}
+
+.selection {
+    width: 100%;
+}
+
+ul {
+    list-style-type: none;
+}
+
+ul.outerList {
+    padding-left: 0;
+}
+
+ul.innerList {
+    padding-left: 20px;
+}
+
+li {
+    margin: 2px 0;
+}
+
+label[for="perCapita"] {
+    font-style: italic;
+}
+
+/*.dropdownSection {
+    display: inline-block;
+    width: 100%;
+}
+
+.dropdownSection label {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 10px;
+}*/
+
+/***** Style Filters *****/
+/* reference: https://stackoverflow.com/questions/1895476/how-to-style-a-select-dropdown-with-css-only-without-javascript */
+#stateDropdown-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;   /* remove default arrow */
+    width: 233px;
+    height: 45px;
+    /*background: #ffffff;*/
+    border: 1px solid #d2d2d2;
+    border-radius: 0;
+    font-family: Lato;
+    cursor: pointer;
+    background: url("../img/arrow.png") 96% / 15% no-repeat #ffffff;
+    background-size: auto;
+}
+
+/*select::-ms-expand {
+    display: none;
+}
+*/
+/* https://stackoverflow.com/questions/17553300/change-ie-background-color-on-unopened-focused-select-box */
+/*
+select:focus::-ms-value {
+    color: #1696d2;
+    background: none;
+}
+
+option {
+    background: #ffffff;
+}*/
+
+/* https://stackoverflow.com/questions/13694271/modify-select-so-only-the-first-one-is-gray */
+select:invalid,
+select option[value=""] {
+    color: #353535;
+}
+
+.ui-selectmenu-text {
+    font-size: 14px;
+    font-weight: bold;
+    color: #1696d2;
+}
+/******************************************/
+
+a {
+  cursor: pointer;
+}
