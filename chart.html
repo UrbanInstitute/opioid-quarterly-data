@@ -24,14 +24,26 @@
             <label for="total_rx">Total prescriptions</label>
         </div>
         <div class="drugSelection checkboxes">
-<!--             <input type="checkbox" id="all" name="drug" value="all" checked>
-            <label for="all">All drugs</label>  -->
-            <input type="checkbox" id="buprenorphine" name="drug" value="buprenorphine" checked>
-            <label for="buprenorphine">Buprenorphine</label>
-            <input type="checkbox" id="naloxone" name="drug" value="naloxone" checked>
-            <label for="naloxone">Naloxone</label>
-            <input type="checkbox" id="naltrexone" name="drug" value="naltrexone" checked>
-            <label for="naltrexone">Naltrexone</label>
+            <ul class="checkboxList">
+                <li>
+                    <input type="checkbox" id="all" name="drug" value="all" checked>
+                    <label for="all">All drugs</label>
+                    <ul>
+                        <li>
+                            <input type="checkbox" id="buprenorphine" name="drug" value="buprenorphine" class="drugSuboption" checked>
+                            <label for="buprenorphine">Buprenorphine</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="naloxone" name="drug" value="naloxone" class="drugSuboption" checked>
+                            <label for="naloxone">Naloxone</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="naltrexone" name="drug" value="naltrexone" class="drugSuboption" checked>
+                            <label for="naltrexone">Naltrexone</label>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
         <div class="brandGenericSelection checkboxes">
 <!--             <input type="checkbox" id="both" name="brandgeneric" value="both" checked>
