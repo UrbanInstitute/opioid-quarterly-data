@@ -48,7 +48,7 @@ hr {
 }
 
 section.userSelections {
-    width: 200px;
+    width: 230px;
     margin-right: 20px;
     float: left;
 }
@@ -102,7 +102,7 @@ label[for="perCapita"] {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;   /* remove default arrow */
-    width: 233px;
+    width: 228px;
     height: 45px;
     /*background: #ffffff;*/
     border: 1px solid #d2d2d2;

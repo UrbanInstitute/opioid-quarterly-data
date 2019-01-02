@@ -15,35 +15,38 @@
     // var COMMAFORMAT = d3.format(",");
 
     ///////////////////////// FUNCTIONS TO DO WITH DROPDOWN //////////////////////////
-    // // Turn dropdown into jQuery UI selectmenu
-    // $( function() {
-    //     $( "#stateDropdown" ).selectmenu({
-    //         change: function( event, data ) {
-    //             pymChild.sendMessage("selectState", data.item.value);
-    //         },
-    //         open: function(event, data) {
-    //         //     d3.select("#mapMask")
-    //         //         .attr("width", function(d){ return d[0]})
-    //         //         .attr("height", function(d){ return d[1] })
+    // Turn dropdown into jQuery UI selectmenu
+    $( function() {
+        $( "#stateDropdown" ).selectmenu({
+            change: function( event, data ) {
+                // pymChild.sendMessage("selectState", data.item.value);
+                getSelections();
+            },
+            open: function(event, data) {
+            //     d3.select("#mapMask")
+            //         .attr("width", function(d){ return d[0]})
+            //         .attr("height", function(d){ return d[1] })
 
-    //             // var menuHeight = d3.select(".stateSelection").node().getBoundingClientRect().height;
-    //             d3.select("#stateDropdown-menu").style("height", "400px");
-    //         }
-    //         // close: function(event, data){
-    //         //     d3.select("#mapMask")
-    //         //         .transition()
-    //         //         .duration(0)
-    //         //         .delay(200)
-    //         //         .attr("width",0).attr("height",0)
-    //         // }
-    //     });
-    // });
+                // var menuHeight = d3.select(".stateSelection").node().getBoundingClientRect().height;
+                var menuTop = d3.select("#stateDropdown-button").node().getBoundingClientRect().bottom;
+                var containerHeight = d3.select(".main").node().getBoundingClientRect().height;
+                d3.select("#stateDropdown-menu").style("height", containerHeight - menuTop + "px");
+            }
+            // close: function(event, data){
+            //     d3.select("#mapMask")
+            //         .transition()
+            //         .duration(0)
+            //         .delay(200)
+            //         .attr("width",0).attr("height",0)
+            // }
+        });
+    });
 
     //////////////////////////////////////////////////////////////////////////////////
 
 
 
-    ///////////////////////// FUNCTIONS TO DO WITH PIES //////////////////////////////
+    ///////////////////////// FUNCTIONS TO DO WITH CHART //////////////////////////////
 
     var stack = d3.stack();
 
@@ -61,7 +64,7 @@
         }
 
         // var width = Math.min(containerWidth, 200 - margin["left"] - margin["right"]),
-        var width = containerWidth - 240 - margin["left"] - margin["right"],
+        var width = containerWidth - 270 - margin["left"] - margin["right"],
             height = width * 0.75 - margin["top"] - margin["bottom"];
 
         // clear chart div before redrawing
