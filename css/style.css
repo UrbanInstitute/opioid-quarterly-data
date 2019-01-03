@@ -72,6 +72,11 @@ section.chart {
     position: absolute;
     right: 0;
     top: 6px;
+    transition: 0.5s ease-in-out;
+}
+
+.arrowImage.rotate90 {
+    transform: rotate(90deg);
 }
 
 .selectionDiv {
@@ -100,6 +105,10 @@ li {
 
 label[for="perCapita"] {
     font-style: italic;
+}
+
+.selected {
+    min-height: 40px;
 }
 
 .selected p {

@@ -316,6 +316,27 @@
         return d3.selectAll("input[name='timeUnit']:checked").property("value");
     }
 
+    /////////////////////// controls for toggling menus //////////////////////////
+    d3.select(".metricSelection.menuHeader").on("click", function() { toggleMenu(".metricSelection"); });
+    d3.select(".drugSelection.menuHeader").on("click", function() { toggleMenu(".drugSelection"); });
+    d3.select(".stateSelection.menuHeader").on("click", function() { toggleMenu(".stateSelection"); });
+    d3.select(".timeSelection.menuHeader").on("click", function() { toggleMenu(".timeSelection"); });
+
+    function toggleMenu(menu) {
+        var menuIsHidden = d3.select(menu + ".selectionDiv").classed("hidden");
+
+        if(menuIsHidden) {
+            d3.select(menu + ".selectionDiv").classed("hidden", false);
+            d3.select(menu + ".selected").classed("hidden", true);
+            d3.select(menu + " .arrowImage").classed("rotate90", false);
+        }
+        else {
+            d3.select(menu + ".selectionDiv").classed("hidden", true);
+            d3.select(menu + ".selected").classed("hidden", false);
+            d3.select(menu + " .arrowImage").classed("rotate90", true);
+        }
+    }
+
     /////////////////////// checkbox functions //////////////////////////
     function checkAllDrugBoxes() {
         checkBox("#buprenorphine");
