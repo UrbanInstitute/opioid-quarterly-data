@@ -18,6 +18,10 @@ text {
     display: inline-block;
 }
 
+.hidden {
+    display: none;
+}
+
 h1 {
     font-weight: normal;
     font-size: 30px;
@@ -96,6 +100,11 @@ li {
 
 label[for="perCapita"] {
     font-style: italic;
+}
+
+.selected p {
+    color: #1696d2;
+    margin: 8px 0;
 }
 
 /*.dropdownSection {

@@ -234,10 +234,27 @@
         else {
             keys = drugs.map(function(drug) { return drug + "_total"; });
         }
-        console.log(keys);
-        // console.log(brandgeneric);
+        // console.log(keys);
+        // console.log(perCapita, metric, drugs, brandgeneric, geo, timeUnit);
         //console.log(perCapita);
         updateChart(metric, geo, timeUnit, keys);
+
+        // build an object of user selections to populate the closed menus with
+        var userSelections = {};
+        userSelections.percap = perCapita;
+        userSelections.metric = metric === "adjmedamt" ? "Medicaid spending" : "Total prescriptions";
+        userSelections.drugs = drugs.map(function(d) { return capitalizeWord(d); });
+        userSelections.state = geo;
+        userSelections.time = capitalizeWord(timeUnit);
+        console.log(userSelections);
+        populateClosedMenus(userSelections);
+    }
+
+    function populateClosedMenus(selections) {
+        d3.select(".metricSelection.selected p.perCapitaSelected").classed("hidden", !selections.percap);
+        d3.select(".metricSelection.selected p.metricSelected").text(selections.metric);
+        d3.select(".stateSelection.selected p.stateSelected").text(selections.state);
+        d3.select(".timeSelection.selected p.timeSelected").text(selections.time);
     }
 
     function handleCheckboxLogic() {
@@ -318,5 +335,10 @@
 
     function uncheckBox(id) {
         d3.select(id).property("checked", false);
+    }
+
+    /////////////////////// string cleaning functions ////////////////////
+    function capitalizeWord(word) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
     }
 })();
