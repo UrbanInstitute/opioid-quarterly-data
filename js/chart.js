@@ -201,7 +201,7 @@
     d3.selectAll("input[name='metric']").on("change", getSelections);
     d3.select("input#all").on("change", handleCheckboxLogic);
     d3.selectAll("input.drugSuboption").on("change", getSelections);
-    d3.selectAll("input[name='brandgeneric']").on("change", getSelections);
+    d3.selectAll("#brandGenericToggle").on("click", toggleSwitch);
     d3.select("#stateDropdown").on("change", getSelections);
     d3.selectAll("input[name='timeUnit']").on("change", getSelections);
 
@@ -267,6 +267,19 @@
         getSelections();
     }
 
+    function toggleSwitch() {
+        if(d3.select("#brandGenericToggle").classed("on")) {
+            d3.select("#brandGenericToggle").classed("on", false);
+            d3.select("#brandGenericToggle").classed("off", true);
+        }
+        else if(d3.select("#brandGenericToggle").classed("off")) {
+            d3.select("#brandGenericToggle").classed("on", true);
+            d3.select("#brandGenericToggle").classed("off", false);
+        }
+
+        getSelections();
+    }
+
     function getDrug() {
         var selectedDrugs = [];
 
@@ -294,16 +307,10 @@
     }
 
     function getBrandGeneric() {
-        var selectedBG = [];
-        var checked = d3.selectAll("input[name='brandgeneric']:checked").nodes();
-
-        if(checked.length == 2) {
+        if(d3.select("#brandGenericToggle").classed("on")) {
             return ['brand', 'generic'];
         }
-        else if(checked.length == 1) {
-            return [checked[0].value];
-        }
-        else {
+        else if(d3.select("#brandGenericToggle").classed("off")) {
             return [];
         }
     }

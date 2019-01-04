@@ -20,6 +20,7 @@ text {
 
 .hidden {
     display: none;
+    /*height: 0;*/
 }
 
 h1 {
@@ -107,8 +108,52 @@ label[for="perCapita"] {
     font-style: italic;
 }
 
+#brandGenericToggle {
+    display: inline-block;
+    margin-top: 10px;
+    /*top: -9px;*/
+    /*position: relative;*/
+}
+
+.toggle {
+    background-image: url(../img/on-off.png);
+    background-repeat: no-repeat;
+    width: 63px;
+    height: 26px;
+    border-radius: 20px;
+    background-size: cover;
+    cursor: pointer;
+    transition: background-position .1s ease-in;
+}
+
+label[for="brandGenericToggle"] {
+    display: inline-block;
+    position: relative;
+    top: -8px;
+    margin-left: 5px;
+}
+
+.toggle.on {
+    background-position: -35px 0px;
+    background-color: #1696d2;
+}
+
+.toggle.on:hover {
+    background-color: #12719e !important;
+}
+
+.toggle.off {
+    background-position: 2px 0px;
+    background-color: #696969;
+}
+
+.toggle.off:hover {
+    background-color: #333 !important;
+}
+
 .selected {
     min-height: 40px;
+    /*transition: height 1s ease-in-out;*/
 }
 
 .selected p {
