@@ -130,10 +130,8 @@
         var data = getData(state, temporal_unit, metric);
 
         var keys = ['buprenorphine_generic', 'buprenorphine_brand', 'naloxone_generic', 'naloxone_brand', 'naltrexone_generic', 'naltrexone_brand'];
-        // var keys = ['buprenorphine_generic', 'buprenorphine_brand'];
 
         stack.keys(keys);
-        // console.log(stack(data));
 
         // set yScale domain based on data selected
         yScale.domain([0, d3.max(stack(data), function(d) { return d3.max(d, function(d) { return d[1]; }); })]).nice();
@@ -223,26 +221,17 @@
         var keys = [];
         if(perCapita) {
             keys = drugs.map(function(drug) { return drug + "_percap"; });
-            // if per capita is checked, need to disable the generic/brand checkboxes
-            d3.selectAll("input[name='brandgeneric']").classed("disabled", true);
         }
         else if(brandgeneric.length > 0) {
-            if(brandgeneric.length === 2) {
-                drugs.forEach(function(drug) {
-                    keys.push(drug + "_generic");
-                    keys.push(drug + "_brand");
-                });
-            }
-            else {
-                keys = drugs.map(function(drug) { return drug + "_" + brandgeneric[0]; });
-            }
+            drugs.forEach(function(drug) {
+                keys.push(drug + "_generic");
+                keys.push(drug + "_brand");
+            });
         }
         else {
             keys = drugs.map(function(drug) { return drug + "_total"; });
         }
-        // console.log(keys);
-        // console.log(perCapita, metric, drugs, brandgeneric, geo, timeUnit);
-        //console.log(perCapita);
+
         updateChart(metric, geo, timeUnit, keys);
 
         // build an object of user selections to populate the closed menus with
@@ -254,6 +243,10 @@
         userSelections.time = capitalizeWord(timeUnit);
         console.log(userSelections);
         populateClosedMenus(userSelections);
+
+        // if per capita is checked, need to disable the generic/brand checkboxes
+        // and vice versa
+        perCapita ? d3.selectAll(".brandGenericSelection").classed("disabled", true) : d3.selectAll(".brandGenericSelection").classed("disabled", false);
     }
 
     function populateClosedMenus(selections) {
@@ -280,6 +273,7 @@
 
             // allow per capita checkbox to be selected
             d3.select("input[name='perCapita']").property("disabled", false);
+            d3.select("label[for='perCapita']").classed("disabled", false);
         }
         else if(d3.select("#brandGenericToggle").classed("off")) {
             d3.select("#brandGenericToggle").classed("on", true);
@@ -287,6 +281,7 @@
 
             // disable per capita checkbox
             d3.select("input[name='perCapita']").property("disabled", true);
+            d3.select("label[for='perCapita']").classed("disabled", true);
         }
 
         getSelections();

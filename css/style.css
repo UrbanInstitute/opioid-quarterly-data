@@ -108,6 +108,11 @@ label[for="perCapita"] {
     font-style: italic;
 }
 
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
 #brandGenericToggle {
     display: inline-block;
     margin-top: 10px;
