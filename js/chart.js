@@ -9,7 +9,13 @@
     var parseDate = d3.timeParse("%Y-%m-%d");
     var xScale = d3.scaleTime(),
         yScale = d3.scaleLinear(),
-        colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+        colorScale = d3.scaleOrdinal()
+            .domain(["buprenorphine_percap", "buprenorphine_total", "buprenorphine_brand", "buprenorphine_generic",
+                "naloxone_percap", "naloxone_total", "naloxone_brand", "naloxone_generic",
+                "naltrexone_percap", "naltrexone_total", "naltrexone_brand", "naltrexone_generic"])
+            .range(["#1696d2", "#1696d2", "#46ABDB", "#A2D4EC",
+                "#FDBF11", "#FDBF11", "#FDD870", "#FCE39E",
+                "#000", "#000", "#696969", "#9d9d9d"]);
 
     // var PCTFORMAT = d3.format(".0%");
     // var COMMAFORMAT = d3.format(",");
@@ -113,7 +119,7 @@
         opioidsData = data;
         // console.log(opioidsData);
 
-        colorScale.domain(data.columns.slice(4));
+        // colorScale.domain(data.columns.slice(4));
 
         pymChild = new pym.Child({renderCallback: drawGraphic });
 
@@ -271,10 +277,16 @@
         if(d3.select("#brandGenericToggle").classed("on")) {
             d3.select("#brandGenericToggle").classed("on", false);
             d3.select("#brandGenericToggle").classed("off", true);
+
+            // allow per capita checkbox to be selected
+            d3.select("input[name='perCapita']").property("disabled", false);
         }
         else if(d3.select("#brandGenericToggle").classed("off")) {
             d3.select("#brandGenericToggle").classed("on", true);
             d3.select("#brandGenericToggle").classed("off", false);
+
+            // disable per capita checkbox
+            d3.select("input[name='perCapita']").property("disabled", true);
         }
 
         getSelections();
@@ -299,6 +311,12 @@
     }
 
     function getPerCapita() {
+        if(d3.select("#perCapita").property("checked")) {
+            // disable generic/brand toggle
+        }
+        else {
+            // enable generic/brand toggle
+        }
         return d3.select("#perCapita").property("checked");
     }
 
