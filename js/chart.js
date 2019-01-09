@@ -1,7 +1,7 @@
 (function() {
     var pymChild = null;
 
-    var margin = {left: 80, top: 10, right: 0, bottom: 40};
+    var margin = {left: 76, top: 10, right: 0, bottom: 18};
 
     // var selectedState;
     var opioidsData;
@@ -148,6 +148,10 @@
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+        svg.append("g")
+            .attr("class", "axis axis--y")
+            .call(d3.axisLeft(yScale).tickSize(-width));
+
         var layer = svg.selectAll(".area")
             .data(stack(data))
             .enter()
@@ -160,10 +164,6 @@
             .attr("class", "axis axis--x")
             .attr("transform", "translate(0," + height + ")")
             .call(d3.axisBottom(xScale));
-
-        svg.append("g")
-            .attr("class", "axis axis--y")
-            .call(d3.axisLeft(yScale));
     }
 
     function getData(state, temporal_unit, metric) {

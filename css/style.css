@@ -178,6 +178,22 @@ label[for="brandGenericToggle"] {
     margin: 8px 0;
 }
 
+.axis--y path {
+    stroke: none;
+}
+
+.axis--y .tick line {
+    stroke: #dedddd;
+}
+
+.tick text {
+    font-size: 12px;
+}
+
+p.notes {
+    font-size: 12px;
+}
+
 /*.dropdownSection {
     display: inline-block;
     width: 100%;
