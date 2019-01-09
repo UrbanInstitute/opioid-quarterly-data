@@ -17,6 +17,8 @@
                 "#FDBF11", "#FDBF11", "#FDD870", "#FCE39E",
                 "#000", "#000", "#696969", "#9d9d9d"]);
 
+    var menuFullHeights = {};
+
     // var PCTFORMAT = d3.format(".0%");
     // var COMMAFORMAT = d3.format(",");
 
@@ -82,6 +84,9 @@
 
         // initial view loads National data
         createChart("areaChart", "National", "quarterly", "adjmedamt", width, height);
+
+        // store menu heights in object so can transition opening/closing them
+        getMenuHeights();
 
         // This is calling an updated height.
         if (pymChild) {
@@ -242,19 +247,19 @@
         userSelections.state = geo;
         userSelections.time = capitalizeWord(timeUnit);
         console.log(userSelections);
-        populateClosedMenus(userSelections);
+        // populateClosedMenus(userSelections);
 
         // if per capita is checked, need to disable the generic/brand checkboxes
         // and vice versa
         perCapita ? d3.selectAll(".brandGenericSelection").classed("disabled", true) : d3.selectAll(".brandGenericSelection").classed("disabled", false);
     }
 
-    function populateClosedMenus(selections) {
-        d3.select(".metricSelection.selected p.perCapitaSelected").classed("hidden", !selections.percap);
-        d3.select(".metricSelection.selected p.metricSelected").text(selections.metric);
-        d3.select(".stateSelection.selected p.stateSelected").text(selections.state);
-        d3.select(".timeSelection.selected p.timeSelected").text(selections.time);
-    }
+    // function populateClosedMenus(selections) {
+    //     d3.select(".metricSelection.selected p.perCapitaSelected").classed("hidden", !selections.percap);
+    //     d3.select(".metricSelection.selected p.metricSelected").text(selections.metric);
+    //     d3.select(".stateSelection.selected p.stateSelected").text(selections.state);
+    //     d3.select(".timeSelection.selected p.timeSelected").text(selections.time);
+    // }
 
     function handleCheckboxLogic() {
         var checkedAll = d3.select("input#all").property("checked");
@@ -337,22 +342,41 @@
     }
 
     /////////////////////// controls for toggling menus //////////////////////////
+    function getMenuHeights() {
+        var menus = ["metricSelection", "drugSelection", "stateSelection", "timeSelection"];
+        menus.forEach(function(m) {
+            var menuHeight = d3.select("." + m + ".selectionDiv").node().getBoundingClientRect().height;
+
+            // store menu heights when in fully opened state so we know what heights to transition these to
+            menuFullHeights["." + m] = menuHeight;
+
+            // also store these heights as style properties in the DOM elements so we can use d3 to transition the heights
+            d3.select("." + m + ".selectionDiv").style("height", menuHeight + "px");
+        })
+    }
+
     d3.select(".metricSelection.menuHeader").on("click", function() { toggleMenu(".metricSelection"); });
     d3.select(".drugSelection.menuHeader").on("click", function() { toggleMenu(".drugSelection"); });
     d3.select(".stateSelection.menuHeader").on("click", function() { toggleMenu(".stateSelection"); });
     d3.select(".timeSelection.menuHeader").on("click", function() { toggleMenu(".timeSelection"); });
 
     function toggleMenu(menu) {
-        var menuIsHidden = d3.select(menu + ".selectionDiv").classed("hidden");
+        var menuIsClosed = d3.select(menu + ".selectionDiv").classed("closed");
 
-        if(menuIsHidden) {
-            d3.select(menu + ".selectionDiv").classed("hidden", false);
-            d3.select(menu + ".selected").classed("hidden", true);
+        if(menuIsClosed) {
+            d3.select(menu + ".selectionDiv").classed("closed", false);
+            d3.select(menu + ".selectionDiv")
+                .transition(500)
+                .style("height", menuFullHeights[menu] + "px");
+            // d3.select(menu + ".selected").classed("hidden", true);
             d3.select(menu + " .arrowImage").classed("rotate90", false);
         }
         else {
-            d3.select(menu + ".selectionDiv").classed("hidden", true);
-            d3.select(menu + ".selected").classed("hidden", false);
+            d3.select(menu + ".selectionDiv").classed("closed", true);
+            d3.select(menu + ".selectionDiv")
+                .transition(500)
+                .style("height", "0px");
+            // d3.select(menu + ".selected").classed("hidden", false);
             d3.select(menu + " .arrowImage").classed("rotate90", true);
         }
     }

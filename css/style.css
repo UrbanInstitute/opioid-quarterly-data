@@ -18,11 +18,11 @@ text {
     display: inline-block;
 }
 
-.hidden {
+/*.hidden {
     display: none;
-    /*height: 0;*/
+    height: 0;
 }
-
+*/
 h1 {
     font-weight: normal;
     font-size: 30px;
@@ -82,6 +82,7 @@ section.chart {
 
 .selectionDiv {
     width: 100%;
+    overflow: hidden;
 }
 
 .selection {
