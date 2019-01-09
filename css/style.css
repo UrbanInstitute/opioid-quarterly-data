@@ -67,6 +67,7 @@ section.chart {
     width: 100%;
     position: relative;
     height: 24px;
+    cursor: pointer;
 }
 
 .arrowImage {
@@ -87,6 +88,15 @@ section.chart {
 
 .selection {
     width: 100%;
+}
+
+input,
+label {
+    cursor: pointer;
+}
+
+input:disabled {
+    cursor: auto;
 }
 
 ul {
@@ -110,6 +120,7 @@ label[for="perCapita"] {
 }
 
 .disabled {
+    cursor: none;
     pointer-events: none;
     opacity: 0.5;
 }
