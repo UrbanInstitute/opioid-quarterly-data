@@ -212,9 +212,10 @@
     }
 
     function updateAxis() {
+        var width = d3.select("#areaChart g").node().getBoundingClientRect().width;
         d3.select("#areaChart .axis.axis--y")
             .transition()
-            .call(d3.axisLeft(yScale));
+            .call(d3.axisLeft(yScale).tickSize(-width));
     }
     //////////////////////////////////////////////////////////////////////////
 
