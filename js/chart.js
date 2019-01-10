@@ -72,7 +72,7 @@
         }
 
         // var width = Math.min(containerWidth, 200 - margin["left"] - margin["right"]),
-        var width = containerWidth - 270 - margin["left"] - margin["right"],
+        var width = (containerWidth > 769) ? containerWidth - 270 - margin["left"] - margin["right"] : containerWidth - margin["left"] - margin["right"],
             height = width * 0.75 - margin["top"] - margin["bottom"];
 
         // clear chart div before redrawing
@@ -87,6 +87,10 @@
 
         // store menu heights in object so can transition opening/closing them
         getMenuHeights();
+
+        if (containerWidth <= 769) {
+            closeAllMenus();
+        }
 
         // This is calling an updated height.
         if (pymChild) {
@@ -352,6 +356,14 @@
 
             // also store these heights as style properties in the DOM elements so we can use d3 to transition the heights
             d3.select("." + m + ".selectionDiv").style("height", menuHeight + "px");
+        })
+    }
+
+    function closeAllMenus() {
+        var menus = ["metricSelection", "drugSelection", "stateSelection", "timeSelection"];
+        menus.forEach(function(m) {
+            d3.select("." + m + ".selectionDiv").classed("closed", true);
+            d3.select("." + m + ".selectionDiv").style("height", "0px");
         })
     }
 
