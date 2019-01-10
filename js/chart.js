@@ -89,6 +89,8 @@
         getMenuHeights();
 
         if (containerWidth <= 769) {
+            // hide filter panel and close all of the menus by default on small screens
+            d3.select("section.userSelections").classed("hidden", true);
             closeAllMenus();
         }
 
@@ -357,12 +359,14 @@
             // also store these heights as style properties in the DOM elements so we can use d3 to transition the heights
             d3.select("." + m + ".selectionDiv").style("height", menuHeight + "px");
         })
+        console.log(menuFullHeights);
     }
 
     function closeAllMenus() {
         var menus = ["metricSelection", "drugSelection", "stateSelection", "timeSelection"];
         menus.forEach(function(m) {
             d3.select("." + m + ".selectionDiv").classed("closed", true);
+            d3.select("." + m + " .arrowImage").classed("rotate90", true);
             d3.select("." + m + ".selectionDiv").style("height", "0px");
         })
     }
@@ -392,6 +396,21 @@
             d3.select(menu + " .arrowImage").classed("rotate90", true);
         }
     }
+
+    d3.select(".filterBtn").on("click", toggleFilters);
+
+    function toggleFilters() {
+        var filtersAreClosed = d3.select("section.userSelections").classed("hidden");
+
+        if(filtersAreClosed) {
+            d3.select("section.userSelections").classed("hidden", false);
+        }
+        else {
+            d3.select("section.userSelections").classed("hidden", true);
+        }
+    }
+
+    d3.select(".closeBtn").on("click", function() { d3.select("section.userSelections").classed("hidden", true); });
 
     /////////////////////// checkbox functions //////////////////////////
     function checkAllDrugBoxes() {
