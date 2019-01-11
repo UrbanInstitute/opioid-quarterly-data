@@ -5,6 +5,7 @@
 
     // var selectedState;
     var opioidsData;
+    var minDate;
 
     var parseDate = d3.timeParse("%Y-%m-%d");
     var xScale = d3.scaleTime(),
@@ -81,6 +82,9 @@
         // set up scales based on iframe width and height
         xScale.domain(d3.extent(opioidsData, function(d) { return d.date; })).range([0, width]);
         yScale.rangeRound([height, 0]);
+
+        // get earliest date in data - need this to help with transitioning areas
+        minDate = d3.min(opioidsData, function(d) { return d.date; });
 
         // initial view loads National data
         createChart("areaChart", "National", "quarterly", "adjmedamt", width, height);
@@ -201,14 +205,20 @@
         var layer = d3.select("#areaChart svg g").selectAll(".area")
             .data(stack(data), function(d) { return d.key; });
 
-        layer.exit().remove();
+        layer.exit().transition().remove();  //TODO: transition this to a "flat" line (i.e, area = 0) then remove the DOM element
 
         layer.enter()
             .append("path")
             .attr("class", "area")
             .style("fill", function(d) { return colorScale(d.key); })
             .merge(layer)
-            .attr("d", area);
+            .transition()
+            .duration(5000)
+            .attrTween("d", function(d) {
+                var previous = d3.select(this).attr("d");
+                var current = area(d);
+                return d3.interpolatePath(previous, current, excludeSegment);
+            });
     }
 
     function updateAxis() {
@@ -216,6 +226,10 @@
         d3.select("#areaChart .axis.axis--y")
             .transition()
             .call(d3.axisLeft(yScale).tickSize(-width));
+    }
+
+    function excludeSegment(a, b) {
+        return a.x === b.x && (a.x === xScale(minDate) || a.x === xScale(new Date(2018, 0, 1)));
     }
     //////////////////////////////////////////////////////////////////////////
 
@@ -260,7 +274,7 @@
         userSelections.drugs = drugs.map(function(d) { return capitalizeWord(d); });
         userSelections.state = geo;
         userSelections.time = capitalizeWord(timeUnit);
-        console.log(userSelections);
+        // console.log(userSelections);
         // populateClosedMenus(userSelections);
 
         // if per capita is checked, need to disable the generic/brand checkboxes
