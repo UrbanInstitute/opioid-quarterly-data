@@ -11,12 +11,12 @@
     var xScale = d3.scaleTime(),
         yScale = d3.scaleLinear(),
         colorScale = d3.scaleOrdinal()
-            .domain(["buprenorphine_percap", "buprenorphine_total", "buprenorphine_brand", "buprenorphine_generic",
-                "naloxone_percap", "naloxone_total", "naloxone_brand", "naloxone_generic",
-                "naltrexone_percap", "naltrexone_total", "naltrexone_brand", "naltrexone_generic"])
-            .range(["#1696d2", "#1696d2", "#46ABDB", "#A2D4EC",
-                "#FDBF11", "#FDBF11", "#FDD870", "#FCE39E",
-                "#000", "#000", "#696969", "#9d9d9d"]);
+            .domain(["buprenorphine", "buprenorphine_brand", "buprenorphine_generic",
+                "naloxone", "naloxone_brand", "naloxone_generic",
+                "naltrexone", "naltrexone_brand", "naltrexone_generic"])
+            .range(["#1696d2", "#46ABDB", "#A2D4EC",
+                "#FDBF11", "#FDD870", "#FCE39E",
+                "#000", "#696969", "#9d9d9d"]);
 
     var menuFullHeights = {};
 
@@ -120,12 +120,9 @@
                 metric: d.metric,
                 // all_percap: +d.all_percap,
                 // all_total: +d.all_total,
-                buprenorphine_percap: +d.buprenorphine_percap,
-                buprenorphine_total: +d.buprenorphine_total,
-                naloxone_percap: +d.naloxone_percap,
-                naloxone_total: +d.naloxone_total,
-                naltrexone_percap: +d.naltrexone_percap,
-                naltrexone_total: +d.naltrexone_total,
+                buprenorphine: +d.buprenorphine,
+                naloxone: +d.naloxone,
+                naltrexone: +d.naltrexone,
                 // all_brand: +d.all_brand,
                 // all_generic: +d.all_generic,
                 buprenorphine_brand: +d.buprenorphine_brand,
@@ -244,7 +241,7 @@
 
     function getSelections() {
         var perCapita = getPerCapita();
-        var metric = getMetric();
+        var metric = perCapita ? getMetric() + "_percap" :getMetric();
         var drugs = getDrug();
         var brandgeneric = getBrandGeneric();
         var geo = getGeography();
@@ -252,28 +249,25 @@
 
         // build array of keys
         var keys = [];
-        if(perCapita) {
-            keys = drugs.map(function(drug) { return drug + "_percap"; });
-        }
-        else if(brandgeneric.length > 0) {
+        if(brandgeneric.length > 0) {
             drugs.forEach(function(drug) {
                 keys.push(drug + "_generic");
                 keys.push(drug + "_brand");
             });
         }
         else {
-            keys = drugs.map(function(drug) { return drug + "_total"; });
+            keys = drugs;
         }
 
         updateChart(metric, geo, timeUnit, keys);
 
         // build an object of user selections to populate the closed menus with
-        var userSelections = {};
-        userSelections.percap = perCapita;
-        userSelections.metric = metric === "adjmedamt" ? "Medicaid spending" : "Total prescriptions";
-        userSelections.drugs = drugs.map(function(d) { return capitalizeWord(d); });
-        userSelections.state = geo;
-        userSelections.time = capitalizeWord(timeUnit);
+        // var userSelections = {};
+        // userSelections.percap = perCapita;
+        // userSelections.metric = metric === "adjmedamt" ? "Medicaid spending" : "Total prescriptions";
+        // userSelections.drugs = drugs.map(function(d) { return capitalizeWord(d); });
+        // userSelections.state = geo;
+        // userSelections.time = capitalizeWord(timeUnit);
         // console.log(userSelections);
         // populateClosedMenus(userSelections);
 
