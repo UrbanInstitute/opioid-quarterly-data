@@ -252,6 +252,41 @@ label[for="brandGenericToggle"] {
     font-size: 12px;
 }
 
+.chartLegend {
+    /*float: left;*/
+    /*padding: 5px 0px 10px 20px;*/
+    width: 340px;
+    margin-bottom: 20px;
+}
+
+.legendGroup {
+    width: 110px;
+    display: inline-block;
+}
+
+.legendRow {
+    width: 100%;
+    /*float: left;*/
+    display: inline-block;
+    padding-bottom: 0px;
+}
+
+.legendText {
+    font-family: Lato;
+    font-size: 13px;
+    float: left;
+    display: inline-block;
+    width: calc(100% - 20px);
+}
+
+.legendSquare {
+    /*display: inline-block;*/
+    height: 0;
+    width: 0;
+    margin: 3px 5px 0px 0px;
+    float: left;
+}
+
 p.notes {
     font-size: 12px;
 }
