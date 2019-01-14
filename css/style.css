@@ -272,8 +272,8 @@ p.notes {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;   /* remove default arrow */
-    width: 218px;
-    height: 45px;
+    width: 216px;
+    height: 42px;
     /*background: #ffffff;*/
     border: 1px solid #d2d2d2;
     border-radius: 0;
@@ -282,6 +282,7 @@ p.notes {
     background: url("../img/arrow.png") 96% / 15% no-repeat #ffffff;
     background-size: auto;
     margin-top: 16px;
+    margin-left: 1.6px;
 }
 
 /*select::-ms-expand {
