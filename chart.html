@@ -25,8 +25,10 @@
                 <div class="metricSelection radioBtns selectionDiv">
                     <div class="selection">
                         <!-- Per capita checkbox -->
-                        <input type="checkbox" id="perCapita" name="perCapita" value="percap" disabled>
-                        <label for="perCapita" class="disabled">per capita</label>
+                        <label for="perCapita" class="disabled btnContainer">per capita
+                            <input type="checkbox" id="perCapita" name="perCapita" value="percap" disabled>
+                            <span class="flatCheckbox"></span>
+                        </label>
                     </div>
                     <div class="selection">
                         <!-- Metric radio buttons -->
@@ -59,20 +61,28 @@
                     <div class="selection">
                         <ul class="outerList">
                             <li>
-                                <input type="checkbox" id="all" name="drug" value="all" checked>
-                                <label for="all">All drugs</label>
+                                <label class="btnContainer" for="all">All drugs
+                                    <input type="checkbox" id="all" name="drug" value="all" checked>
+                                    <span class="flatCheckbox"></span>
+                                </label>
                                 <ul class="innerList">
                                     <li>
-                                        <input type="checkbox" id="buprenorphine" name="drug" value="buprenorphine" class="drugSuboption" checked>
-                                        <label for="buprenorphine">Buprenorphine</label>
+                                        <label class="btnContainer" for="buprenorphine">Buprenorphine
+                                            <input type="checkbox" id="buprenorphine" name="drug" value="buprenorphine" class="drugSuboption" checked>
+                                            <span class="flatCheckbox"></span>
+                                        </label>
                                     </li>
                                     <li>
-                                        <input type="checkbox" id="naloxone" name="drug" value="naloxone" class="drugSuboption" checked>
-                                        <label for="naloxone">Naloxone</label>
+                                        <label class="btnContainer" for="naloxone">Naloxone
+                                            <input type="checkbox" id="naloxone" name="drug" value="naloxone" class="drugSuboption" checked>
+                                            <span class="flatCheckbox"></span>
+                                        </label>
                                     </li>
                                     <li>
-                                        <input type="checkbox" id="naltrexone" name="drug" value="naltrexone" class="drugSuboption" checked>
-                                        <label for="naltrexone">Naltrexone</label>
+                                        <label class="btnContainer" for="naltrexone">Naltrexone
+                                            <input type="checkbox" id="naltrexone" name="drug" value="naltrexone" class="drugSuboption" checked>
+                                            <span class="flatCheckbox"></span>
+                                        </label>
                                     </li>
                                 </ul>
                             </li>

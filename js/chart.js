@@ -184,19 +184,19 @@
     function getData(state, temporal_unit, metric, keys) {
         var newData = opioidsData.filter(function(d) { return d.state === state && d.temporal_unit === temporal_unit && d.metric === metric; });
         // console.log(keys, fullKeys);
-        if(keys !== fullKeys) {
-            // if not all drugs are selected, set the data values for non-selected drugs to zero so that
-            // the stack hides nicely
-            var notInFullKeys = fullKeys.filter(function(k) { return keys.indexOf(k) < 0; });
-            newData.forEach(function(d) {
-                notInFullKeys.forEach(function(k) { d[k] = 0; });  // this is overwriting the original data
-            });
-            console.log(notInFullKeys);
+        // if(keys !== fullKeys) {
+        //     // if not all drugs are selected, set the data values for non-selected drugs to zero so that
+        //     // the stack hides nicely
+        //     var notInFullKeys = fullKeys.filter(function(k) { return keys.indexOf(k) < 0; });
+        //     newData.forEach(function(d) {
+        //         notInFullKeys.forEach(function(k) { d[k] = 0; });  // this is overwriting the original data
+        //     });
+        //     console.log(notInFullKeys);
+        //     return newData;
+        // }
+        // else {
             return newData;
-        }
-        else {
-            return newData;
-        }
+        // }
     }
 
 
