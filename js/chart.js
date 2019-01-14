@@ -1,7 +1,7 @@
 (function() {
     var pymChild = null;
 
-    var margin = {left: 76, top: 10, right: 0, bottom: 18};
+    var margin = {left: 80, top: 10, right: 0, bottom: 18};
 
     // var selectedState;
     var opioidsData;
@@ -18,6 +18,7 @@
                 "#FDBF11", "#FDD870", "#FCE39E",
                 "#000", "#696969", "#9d9d9d"]);
 
+    var fullKeys;
     var menuFullHeights = {};
 
     // var PCTFORMAT = d3.format(".0%");
@@ -87,7 +88,7 @@
         minDate = d3.min(opioidsData, function(d) { return d.date; });
 
         // initial view loads National data
-        createChart("areaChart", "National", "quarterly", "adjmedamt", width, height);
+        createChart("areaChart", "National", "quarterly", "adjmedamt_gb", width, height);
 
         // store menu heights in object so can transition opening/closing them
         getMenuHeights();
@@ -138,7 +139,7 @@
         opioidsData = data;
         // console.log(opioidsData);
 
-        // colorScale.domain(data.columns.slice(4));
+        fullKeys = data.columns.slice(4);
 
         pymChild = new pym.Child({renderCallback: drawGraphic });
 
@@ -146,11 +147,11 @@
     });
 
     function createChart(parentElement, state, temporal_unit, metric, width, height) {
-        var data = getData(state, temporal_unit, metric);
+        var data = getData(state, temporal_unit, metric, fullKeys);
 
-        var keys = ['buprenorphine_generic', 'buprenorphine_brand', 'naloxone_generic', 'naloxone_brand', 'naltrexone_generic', 'naltrexone_brand'];
+        // var keys = ['buprenorphine_generic', 'buprenorphine_brand', 'naloxone_generic', 'naloxone_brand', 'naltrexone_generic', 'naltrexone_brand'];
 
-        stack.keys(keys);
+        stack.keys(fullKeys);
 
         // set yScale domain based on data selected
         yScale.domain([0, d3.max(stack(data), function(d) { return d3.max(d, function(d) { return d[1]; }); })]).nice();
@@ -180,29 +181,42 @@
             .call(d3.axisBottom(xScale));
     }
 
-    function getData(state, temporal_unit, metric) {
-        return opioidsData.filter(function(d) { return d.state === state && d.temporal_unit === temporal_unit && d.metric === metric; });
+    function getData(state, temporal_unit, metric, keys) {
+        var newData = opioidsData.filter(function(d) { return d.state === state && d.temporal_unit === temporal_unit && d.metric === metric; });
+        // console.log(keys, fullKeys);
+        if(keys !== fullKeys) {
+            // if not all drugs are selected, set the data values for non-selected drugs to zero so that
+            // the stack hides nicely
+            var notInFullKeys = fullKeys.filter(function(k) { return keys.indexOf(k) < 0; });
+            newData.forEach(function(d) {
+                notInFullKeys.forEach(function(k) { d[k] = 0; });  // this is overwriting the original data
+            });
+            console.log(notInFullKeys);
+            return newData;
+        }
+        else {
+            return newData;
+        }
     }
 
 
     // update tool with selected state's information
     function updateChart(metric, state, timeUnit, keys) {
-        var data = getData(state, timeUnit, metric);
+        var data = getData(state, timeUnit, metric, keys);
 
         // var keys = ['naltrexone_generic', 'naltrexone_brand', 'naloxone_generic', 'naloxone_brand', 'buprenorphine_generic', 'buprenorphine_brand'];
         // var keys = ['naltrexone_generic', 'naltrexone_brand'];
         stack.keys(keys);
-
+// console.log(keys, data);
         // set yScale domain based on data selected
         yScale.domain([0, d3.max(stack(data), function(d) { return d3.max(d, function(d) { return d[1]; }); })]).nice();
-        // console.log(yScale.domain());
         updateAxis();
         // console.log(stack(data));
 
         var layer = d3.select("#areaChart svg g").selectAll(".area")
             .data(stack(data), function(d) { return d.key; });
 
-        layer.exit().transition().remove();  //TODO: transition this to a "flat" line (i.e, area = 0) then remove the DOM element
+        layer.exit().remove();  //TODO: transition this to a "flat" line (i.e, area = 0) then remove the DOM element
 
         layer.enter()
             .append("path")
@@ -210,7 +224,7 @@
             .style("fill", function(d) { return colorScale(d.key); })
             .merge(layer)
             .transition()
-            .duration(5000)
+            // .duration(5000)
             .attrTween("d", function(d) {
                 var previous = d3.select(this).attr("d");
                 var current = area(d);
@@ -241,25 +255,34 @@
 
     function getSelections() {
         var perCapita = getPerCapita();
-        var metric = perCapita ? getMetric() + "_percap" :getMetric();
+        var metric = getMetric();
         var drugs = getDrug();
-        var brandgeneric = getBrandGeneric();
+        var brandgeneric = d3.select("#brandGenericToggle").classed("on");
         var geo = getGeography();
         var timeUnit = getTimeUnit();
 
+        // get metric
+        if(perCapita) {
+            metric = metric + "_percap";
+        }
+        else if(brandgeneric) {
+            metric = metric + "_gb";
+        }
+
         // build array of keys
-        var keys = [];
-        if(brandgeneric.length > 0) {
+        var newKeys = [];
+        if(drugs.length < 3) {
             drugs.forEach(function(drug) {
-                keys.push(drug + "_generic");
-                keys.push(drug + "_brand");
+                newKeys.push(drug);
+                newKeys.push(drug + "_generic");
+                newKeys.push(drug + "_brand");
             });
         }
         else {
-            keys = drugs;
+            newKeys = fullKeys;
         }
 
-        updateChart(metric, geo, timeUnit, keys);
+        updateChart(metric, geo, timeUnit, newKeys);
 
         // build an object of user selections to populate the closed menus with
         // var userSelections = {};
@@ -375,14 +398,14 @@
             // also store these heights as style properties in the DOM elements so we can use d3 to transition the heights
             d3.select("." + m + ".selectionDiv").style("height", menuHeight + "px");
         })
-        console.log(menuFullHeights);
+        // console.log(menuFullHeights);
     }
 
     function closeAllMenus() {
         var menus = ["metricSelection", "drugSelection", "stateSelection", "timeSelection"];
         menus.forEach(function(m) {
             d3.select("." + m + ".selectionDiv").classed("closed", true);
-            d3.select("." + m + " .arrowImage").classed("rotate90", true);
+            d3.select("." + m + " .arrowImage").classed("rotate180", true);
             d3.select("." + m + ".selectionDiv").style("height", "0px");
         })
     }
@@ -401,7 +424,7 @@
                 .transition(500)
                 .style("height", menuFullHeights[menu] + "px");
             // d3.select(menu + ".selected").classed("hidden", true);
-            d3.select(menu + " .arrowImage").classed("rotate90", false);
+            d3.select(menu + " .arrowImage").classed("rotate180", false);
         }
         else {
             d3.select(menu + ".selectionDiv").classed("closed", true);
@@ -409,7 +432,7 @@
                 .transition(500)
                 .style("height", "0px");
             // d3.select(menu + ".selected").classed("hidden", false);
-            d3.select(menu + " .arrowImage").classed("rotate90", true);
+            d3.select(menu + " .arrowImage").classed("rotate180", true);
         }
     }
 
