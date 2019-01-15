@@ -184,46 +184,43 @@
     function getData(state, temporal_unit, metric, keys) {
         var newData = opioidsData.filter(function(d) { return d.state === state && d.temporal_unit === temporal_unit && d.metric === metric; });
         // console.log(keys, fullKeys);
-        // if(keys !== fullKeys) {
-        //     // if not all drugs are selected, set the data values for non-selected drugs to zero so that
-        //     // the stack hides nicely
-        //     var notInFullKeys = fullKeys.filter(function(k) { return keys.indexOf(k) < 0; });
-        //     newData.forEach(function(d) {
-        //         notInFullKeys.forEach(function(k) { d[k] = 0; });  // this is overwriting the original data
-        //     });
-        //     console.log(notInFullKeys);
-        //     return newData;
-        // }
-        // else {
+        var newData2 = [];
+        if(keys !== fullKeys) {
+            // if not all drugs are selected, set the data values for non-selected drugs to zero so that
+            // the stack hides nicely
+            var notInFullKeys = fullKeys.filter(function(k) { return keys.indexOf(k) < 0; });
+            newData.forEach(function(d) {
+                var obs = {};
+                obs.state = d.state;
+                obs.temporal_unit = d.temporal_unit;
+                obs.date = d.date;
+                obs.metric = d.metric;
+                fullKeys.forEach(function(k) { (keys.indexOf(k) > -1) ? obs[k] = d[k] : obs[k] = 0.0001; });  // this is overwriting the original data
+                newData2.push(obs);
+            });
+            // console.log(newData2);
+            return newData2;
+        }
+        else {
+            // console.log(newData);
             return newData;
-        // }
+        }
     }
 
 
     // update tool with selected state's information
     function updateChart(metric, state, timeUnit, keys) {
         var data = getData(state, timeUnit, metric, keys);
+        stack.keys(fullKeys);
 
-        // var keys = ['naltrexone_generic', 'naltrexone_brand', 'naloxone_generic', 'naloxone_brand', 'buprenorphine_generic', 'buprenorphine_brand'];
-        // var keys = ['naltrexone_generic', 'naltrexone_brand'];
-        stack.keys(keys);
-// console.log(keys, data);
         // set yScale domain based on data selected
         yScale.domain([0, d3.max(stack(data), function(d) { return d3.max(d, function(d) { return d[1]; }); })]).nice();
         updateAxis();
         // console.log(stack(data));
-
         var layer = d3.select("#areaChart svg g").selectAll(".area")
             .data(stack(data), function(d) { return d.key; });
 
-        layer.exit().remove();  //TODO: transition this to a "flat" line (i.e, area = 0) then remove the DOM element
-
-        layer.enter()
-            .append("path")
-            .attr("class", "area")
-            .style("fill", function(d) { return colorScale(d.key); })
-            .merge(layer)
-            .transition()
+        layer.transition()
             // .duration(5000)
             .attrTween("d", function(d) {
                 var previous = d3.select(this).attr("d");
