@@ -9,14 +9,14 @@
 
     var parseDate = d3.timeParse("%Y-%m-%d");
     var xScale = d3.scaleTime(),
-        yScale = d3.scaleLinear(),
-        colorScale = d3.scaleOrdinal()
-            .domain(["buprenorphine", "buprenorphine_brand", "buprenorphine_generic",
-                "naloxone", "naloxone_brand", "naloxone_generic",
-                "naltrexone", "naltrexone_brand", "naltrexone_generic"])
-            .range(["#1696d2", "#46ABDB", "#A2D4EC",
-                "#FDBF11", "#FDD870", "#FCE39E",
-                "#000", "#696969", "#9d9d9d"]);
+        yScale = d3.scaleLinear();
+        // colorScale = d3.scaleOrdinal()
+        //     .domain(["buprenorphine", "buprenorphine_brand", "buprenorphine_generic",
+        //         "naloxone", "naloxone_brand", "naloxone_generic",
+        //         "naltrexone", "naltrexone_brand", "naltrexone_generic"])
+        //     .range(["#1696d2", "#46ABDB", "#A2D4EC",
+        //         "#FDBF11", "#FDD870", "#FCE39E",
+        //         "#000", "#696969", "#9d9d9d"]);
 
     var fullKeys;
     var menuFullHeights = {};
@@ -171,8 +171,8 @@
             .data(stack(data))
             .enter()
             .append("path")
-            .attr("class", "area")
-            .style("fill", function(d) { return colorScale(d.key); })
+            .attr("class", function(d) { return "area " + d.key; })
+            // .style("fill", function(d) { return colorScale(d.key); })
             .attr("d", area);
 
         svg.append("g")
