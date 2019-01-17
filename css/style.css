@@ -147,6 +147,12 @@ path.naltrexone_generic {
     background: none;
 }
 
+@media screen and (min-width: 770px) {
+    .closeBtnDiv {
+        display: none;
+    }
+}
+
 @media screen and (max-width: 769px) {
     section.userSelections {
         width: 100%;
@@ -187,9 +193,10 @@ path.naltrexone_generic {
     }
 }
 
-@media screen and (min-width: 770px) {
-    .closeBtnDiv {
-        display: none;
+@media screen and (max-width: 400px) {
+    .filterBtn {
+        height: 40px;
+        /*width: 60px;*/
     }
 }
 
