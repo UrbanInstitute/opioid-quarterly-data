@@ -281,27 +281,38 @@
 
         updateChart(metric, geo, timeUnit, newKeys);
 
-        // build an object of user selections to populate the closed menus with
-        // var userSelections = {};
-        // userSelections.percap = perCapita;
-        // userSelections.metric = metric === "adjmedamt" ? "Medicaid spending" : "Total prescriptions";
-        // userSelections.drugs = drugs.map(function(d) { return capitalizeWord(d); });
-        // userSelections.state = geo;
-        // userSelections.time = capitalizeWord(timeUnit);
-        // console.log(userSelections);
-        // populateClosedMenus(userSelections);
+        // build an object of user selections to highlight selections with
+        var userSelections = {};
+        userSelections.percap = perCapita;
+        userSelections.metric = metric.split("_")[0];
+        userSelections.drugs = drugs.map(function(d) { return capitalizeWord(d); });
+        userSelections.state = geo;
+        userSelections.time = timeUnit;
+        highlightSelections(userSelections);
 
         // if per capita is checked, need to disable the generic/brand checkboxes
         // and vice versa
         perCapita ? d3.selectAll(".brandGenericSelection").classed("disabled", true) : d3.selectAll(".brandGenericSelection").classed("disabled", false);
     }
 
-    // function populateClosedMenus(selections) {
-    //     d3.select(".metricSelection.selected p.perCapitaSelected").classed("hidden", !selections.percap);
-    //     d3.select(".metricSelection.selected p.metricSelected").text(selections.metric);
-    //     d3.select(".stateSelection.selected p.stateSelected").text(selections.state);
-    //     d3.select(".timeSelection.selected p.timeSelected").text(selections.time);
-    // }
+    function highlightSelections(selections) {
+        d3.selectAll("label").classed("selected", false);
+
+        if(selections.percap) d3.select("label[for='perCapita']").classed("selected", true);
+
+        d3.select("label[for='" + selections.metric + "']").classed("selected", true);
+
+        if(selections.drugs.length === 3) {
+            d3.select("label[for='all']").classed("selected", true);
+        }
+        else {
+            selections.drugs.forEach(function(drug) {
+                d3.select("label[for='" + drug.toLowerCase() + "']").classed("selected", true);
+            })
+        }
+
+        d3.select("label[for='" + selections.time + "']").classed("selected", true);
+    }
 
     function handleCheckboxLogic() {
         var checkedAll = d3.select("input#all").property("checked");
@@ -353,12 +364,6 @@
     }
 
     function getPerCapita() {
-        if(d3.select("#perCapita").property("checked")) {
-            // disable generic/brand toggle
-        }
-        else {
-            // enable generic/brand toggle
-        }
         return d3.select("#perCapita").property("checked");
     }
 

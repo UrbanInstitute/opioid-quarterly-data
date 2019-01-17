@@ -2,6 +2,7 @@ body{
     font-family: Lato;
     font-size: 16px;
     background: none !important;
+    color: #353535;
     /*margin: 0;*/
 }
 
@@ -26,6 +27,7 @@ text {
 h1 {
     font-weight: normal;
     font-size: 30px;
+    color: #000;
 }
 
 h2 {
@@ -56,6 +58,7 @@ a {
 
 hr {
     margin: 30px 0;
+    border: 0.5px solid #d2d2d2;
 }
 
 section.userSelections {
@@ -100,7 +103,7 @@ path.naltrexone_brand {
     fill: #696969;
 }
 
-path.natrexone_generic {
+path.naltrexone_generic {
     fill: #9d9d9d;
 }
 
@@ -202,6 +205,10 @@ input:disabled {
     cursor: auto;
 }
 
+label + input:checked {
+    color: #1696d2;
+}
+
 ul {
     list-style-type: none;
 }
@@ -229,6 +236,10 @@ label[for="perCapita"] {
     opacity: 0.5;
 }
 
+.brandGenericLabel {
+    margin-top: 30px;
+}
+
 #brandGenericToggle {
     display: inline-block;
     margin-top: 10px;
@@ -247,12 +258,12 @@ label[for="perCapita"] {
     transition: background-position .1s ease-in;
 }
 
-label[for="brandGenericToggle"] {
+/*label[for="brandGenericToggle"] {
     display: inline-block;
     position: relative;
     top: -8px;
     margin-left: 5px;
-}
+}*/
 
 .toggle.on {
     background-position: -35px 0px;
@@ -273,13 +284,7 @@ label[for="brandGenericToggle"] {
 }
 
 .selected {
-    min-height: 40px;
-    /*transition: height 1s ease-in-out;*/
-}
-
-.selected p {
     color: #1696d2;
-    margin: 8px 0;
 }
 
 .axis--y path {
