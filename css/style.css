@@ -175,7 +175,7 @@ path.natrexone_generic {
     position: absolute;
     right: 0;
     top: 6px;
-    transition: 0.5s ease-in-out;
+    transition: 0.4s ease-in-out;
     transform: rotate(180deg);
 }
 
