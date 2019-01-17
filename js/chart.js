@@ -169,12 +169,18 @@
         svg.append("g")
             .attr("class", "axis axis--x")
             .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(xScale));
+            .call(d3.axisBottom(xScale).ticks(d3.timeMonth.every(3)));
+
+        // get rid of tick labels for quarters 2-4 (i.e., only label the start of the year)
+        var ticks = d3.selectAll(".axis--x .tick text");
+        ticks.attr("class", function(d, i) {
+            if(i % 4 !== 0) d3.select(this).remove();
+        });
     }
 
     function getData(state, temporal_unit, metric, keys) {
         var newData = opioidsData.filter(function(d) { return d.state === state && d.temporal_unit === temporal_unit && d.metric === metric; });
-        // console.log(keys, fullKeys);
+
         var newData2 = [];
         if(keys !== fullKeys) {
             // if not all drugs are selected, set the data values for non-selected drugs to zero so that
@@ -189,11 +195,9 @@
                 fullKeys.forEach(function(k) { (keys.indexOf(k) > -1) ? obs[k] = d[k] : obs[k] = 0.0001; });  // this is overwriting the original data
                 newData2.push(obs);
             });
-            // console.log(newData2);
             return newData2;
         }
         else {
-            // console.log(newData);
             return newData;
         }
     }
@@ -203,6 +207,18 @@
     function updateChart(metric, state, timeUnit, keys) {
         var data = getData(state, timeUnit, metric, keys);
         stack.keys(fullKeys);
+
+        var ticks = d3.selectAll(".axis--x .tick line");
+        if(timeUnit === "annual") {
+            // if time unit is annual, hide ticks that appear for quarters 2-4
+            ticks.style("opacity", function(d, i) {
+                if(i % 4 !== 0) return 0;
+            });
+        }
+        else if(timeUnit === "quarterly") {
+            // if time unit is quarterly, show all ticks
+            ticks.style("opacity", 1);
+        }
 
         // set yScale domain based on data selected
         yScale.domain([0, d3.max(stack(data), function(d) { return d3.max(d, function(d) { return d[1]; }); })]).nice();
