@@ -77,6 +77,10 @@
         var width = (containerWidth > 769) ? containerWidth - 270 - margin["left"] - margin["right"] : containerWidth - margin["left"] - margin["right"],
             height = width * 0.75 - margin["top"] - margin["bottom"];
 
+        if(containerWidth < 450) {
+            height = width * 0.85 - margin["top"] - margin["bottom"];
+        }
+
         // clear chart div before redrawing
         $("#areaChart").empty();
 
