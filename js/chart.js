@@ -94,15 +94,6 @@
         getMenuHeights();
 
         if (containerWidth <= 769) {
-            // in order to calculate the menu heights, the filter panel has to be fully open
-            // and therefore visible on load. To prevent a flicker of the filter panel when
-            // the page loads, I first set its opacity to 0. After the menu heights have been
-            // calculated, the panel can be hidden using display:none and the opacity can be
-            // reset to 1
-
-            // hide filter panel and close all of the menus by default on small screens
-            d3.select("section.userSelections").classed("hidden", true);
-            d3.select("section.userSelections").style("opacity", 1);
             closeAllMenus();
         }
 
@@ -438,20 +429,20 @@
         }
     }
 
-    d3.select(".filterBtn").on("click", toggleFilters);
+    d3.select(".filterBtn").on("click", function() { d3.select("section.userSelections").classed("slideIn", true); });
 
     function toggleFilters() {
         var filtersAreClosed = d3.select("section.userSelections").classed("hidden");
 
         if(filtersAreClosed) {
-            d3.select("section.userSelections").classed("hidden", false);
+            d3.select("section.userSelections").classed("slideIn", false);
         }
         else {
-            d3.select("section.userSelections").classed("hidden", true);
+            d3.select("section.userSelections").classed("slideIn", true);
         }
     }
 
-    d3.select(".closeBtn").on("click", function() { d3.select("section.userSelections").classed("hidden", true); });
+    d3.select(".closeBtn").on("click", function() { d3.select("section.userSelections").classed("slideIn", false); });
 
     /////////////////////// checkbox functions //////////////////////////
     function checkAllDrugBoxes() {
