@@ -47,6 +47,10 @@ h3.categoryLabel {
     /*margin-top: 0;*/
 }
 
+h3.filterTitle {
+    display: none;
+}
+
 h4 {
     font-weight: bold;
     font-size: 18px;
@@ -123,6 +127,15 @@ path.naltrexone_generic {
     cursor: pointer;
 }
 
+.closeBtnDiv {
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    position: absolute;
+    top: 31px;
+    right: 24px;
+}
+
 .closeBtn {
     display: block;
     margin-left: auto;
@@ -153,6 +166,17 @@ path.naltrexone_generic {
         display: none;
     }
 
+    h3.filterTitle {
+        display: block;
+        color: #000;
+        font-size: 22px;
+        line-height: 32px;
+        font-weight: bold;
+        text-align: center;
+        text-transform: uppercase;
+        margin-bottom: 60px;
+    }
+
     section.chart {
         width: 100%;
     }
@@ -163,7 +187,7 @@ path.naltrexone_generic {
 }
 
 @media screen and (min-width: 770px) {
-    .closeBtn {
+    .closeBtnDiv {
         display: none;
     }
 }
