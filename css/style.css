@@ -147,6 +147,11 @@ path.naltrexone_generic {
     background: none;
 }
 
+.closeBtn img {
+    width: 24px;
+    height: 24px;
+}
+
 @media screen and (min-width: 770px) {
     .closeBtnDiv {
         display: none;
@@ -394,7 +399,7 @@ p.notes {
     border-radius: 0;
     font-family: Lato;
     cursor: pointer;
-    background: url("../img/arrow.png") 96% / 15% no-repeat #ffffff;
+    background: url("../img/arrow_blue.png") 96% / 15% no-repeat #ffffff;
     background-size: auto;
     margin-top: 16px;
     margin-left: 1.6px;
