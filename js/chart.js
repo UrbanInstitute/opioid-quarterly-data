@@ -1,7 +1,7 @@
 (function() {
     var pymChild = null;
 
-    var margin = {left: 80, top: 30, right: 0, bottom: 18};
+    var margin = {left: 35, top: 30, right: 0, bottom: 18};
 
     // var selectedState;
     var opioidsData;
@@ -163,7 +163,7 @@
 
         svg.append("g")
             .attr("class", "axis axis--y")
-            .call(d3.axisLeft(yScale).tickSize(-width));
+            .call(d3.axisLeft(yScale).tickSize(-width).tickFormat(d3.format(".2s")));
 
         // add label for y-axis
         svg.append("text")
@@ -236,10 +236,11 @@
             ticks.style("opacity", 1);
         }
 
-        // set yScale domain based on data selected
+        // set yScale domain and y-axis tick formats based on data selected
         if(keys.length > 0) {
             yScale.domain([0, d3.max(stack(data), function(d) { return d3.max(d, function(d) { return d[1]; }); })]).nice();
-            updateAxis();
+            var percap = metric.indexOf("_percap") > -1;
+            updateAxis(percap);
         }
 
         // update y-axis label if needed
@@ -257,11 +258,20 @@
             });
     }
 
-    function updateAxis() {
+    function updateAxis(percap) {
         var width = d3.select("#areaChart g").node().getBoundingClientRect().width;
-        d3.select("#areaChart .axis.axis--y")
-            .transition()
-            .call(d3.axisLeft(yScale).tickSize(-width));
+
+        // if viewing per capita data, don't use SI units on y-axis
+        if(percap) {
+            d3.select("#areaChart .axis.axis--y")
+                .transition()
+                .call(d3.axisLeft(yScale).tickSize(-width));
+        }
+        else {
+            d3.select("#areaChart .axis.axis--y")
+                .transition()
+                .call(d3.axisLeft(yScale).tickSize(-width).tickFormat(d3.format(".2s")));
+        }
     }
 
     function excludeSegment(a, b) {
