@@ -6,6 +6,7 @@
     // var selectedState;
     var opioidsData;
     var minDate;
+    var originalHeight;
 
     var parseDate = d3.timeParse("%Y-%m-%d");
     var xScale = d3.scaleTime(),
@@ -105,6 +106,9 @@
         if (pymChild) {
             pymChild.sendHeight();
         }
+
+        // save height of div for when filter menus open/close on small screens
+        originalHeight = d3.select(".main").node().getBoundingClientRect().height;
     }
 
     // parse data and draw plots
@@ -438,7 +442,6 @@
             // also store these heights as style properties in the DOM elements so we can use d3 to transition the heights
             d3.select("." + m + ".selectionDiv").style("height", menuHeight + "px");
         })
-        // console.log(menuFullHeights);
     }
 
     function closeAllMenus() {
@@ -462,22 +465,38 @@
             d3.select(menu + ".selectionDiv").classed("closed", false);
             d3.select(menu + ".selectionDiv")
                 .transition(500)
-                .style("height", menuFullHeights[menu] + "px");
-            // d3.select(menu + ".selected").classed("hidden", true);
+                .style("height", menuFullHeights[menu] + "px")
+                .on("end", adjustMainDivHeight);
             d3.select(menu + " .arrowImage").classed("rotate180", false);
 
-            pymChild.sendHeight();
         }
         else {
             d3.select(menu + ".selectionDiv").classed("closed", true);
             d3.select(menu + ".selectionDiv")
                 .transition(500)
-                .style("height", "0px");
-            // d3.select(menu + ".selected").classed("hidden", false);
+                .style("height", "0px")
+                .on("end", adjustMainDivHeight);
             d3.select(menu + " .arrowImage").classed("rotate180", true);
 
             pymChild.sendHeight();
         }
+    }
+
+    function adjustMainDivHeight() {
+        // var mainheight = d3.select(".main").node().getBoundingClientRect().height;
+        var selectionMenuHeight = d3.select(".userSelections").node().getBoundingClientRect().height;
+
+        if(selectionMenuHeight > originalHeight) {
+            // set .main height to selection menu height
+            d3.select(".main").style("height", selectionMenuHeight + "px");
+        }
+        else {
+            // set .main height back to original height
+            d3.select(".main").style("height", originalHeight + "px");
+        }
+        // console.log("iframe height:", mainheight);
+        // console.log("selection menu height:", selectionMenuHeight);
+        pymChild.sendHeight();
     }
 
     d3.select(".filterBtn").on("click", function() { d3.select("section.userSelections").classed("slideIn", true); });
