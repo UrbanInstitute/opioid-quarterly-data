@@ -1,7 +1,7 @@
 (function() {
     var pymChild = null;
 
-    var margin = {left: 80, top: 10, right: 0, bottom: 18};
+    var margin = {left: 80, top: 30, right: 0, bottom: 18};
 
     // var selectedState;
     var opioidsData;
@@ -165,6 +165,13 @@
             .attr("class", "axis axis--y")
             .call(d3.axisLeft(yScale).tickSize(-width));
 
+        // add label for y-axis
+        svg.append("text")
+            .attr("class", "yaxisLabel")
+            .attr("x", -margin["left"])
+            .attr("y", -margin["top"] + 12)
+            .text("Dollars")
+
         var layer = svg.selectAll(".area")
             .data(stack(data))
             .enter()
@@ -216,6 +223,7 @@
         var data = getData(state, timeUnit, metric, keys);
         stack.keys(fullKeys);
 
+        // update ticks in x-axis if needed
         var ticks = d3.selectAll(".axis--x .tick line");
         if(timeUnit === "annual") {
             // if time unit is annual, hide ticks that appear for quarters 2-4
@@ -233,6 +241,9 @@
             yScale.domain([0, d3.max(stack(data), function(d) { return d3.max(d, function(d) { return d[1]; }); })]).nice();
             updateAxis();
         }
+
+        // update y-axis label if needed
+        metric === "adjmedamt" ? d3.select(".yaxisLabel").text("Dollars") : d3.select(".yaxisLabel").text("Number of prescriptions")
 
         var layer = d3.select("#areaChart svg g").selectAll(".area")
             .data(stack(data), function(d) { return d.key; });

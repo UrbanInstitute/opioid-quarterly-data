@@ -336,6 +336,11 @@ label[for="perCapita"] {
     font-size: 12px;
 }
 
+.yaxisLabel {
+    font-size: 12px;
+    font-style: italic;
+}
+
 .chartLegend {
     /*float: left;*/
     /*padding: 5px 0px 10px 20px;*/
