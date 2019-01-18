@@ -371,6 +371,12 @@ label[for="perCapita"] {
     float: left;
 }
 
+@media screen and (max-width: 769px) {
+    .chartLegend {
+        width: 100%;
+    }
+}
+
 p.notes {
     font-size: 12px;
 }

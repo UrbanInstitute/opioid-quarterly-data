@@ -78,7 +78,7 @@
             height = width * 0.75 - margin["top"] - margin["bottom"];
 
         if(containerWidth < 450) {
-            height = width * 0.85 - margin["top"] - margin["bottom"];
+            height = width * 0.85 - margin["top"] - margin["bottom"];  // make chart slightly taller on small screens
         }
 
         // clear chart div before redrawing
@@ -200,7 +200,7 @@
                 obs.temporal_unit = d.temporal_unit;
                 obs.date = d.date;
                 obs.metric = d.metric;
-                fullKeys.forEach(function(k) { (keys.indexOf(k) > -1) ? obs[k] = d[k] : obs[k] = 0.0001; });  // this is overwriting the original data
+                fullKeys.forEach(function(k) { (keys.indexOf(k) > -1) ? obs[k] = d[k] : obs[k] = 0; });
                 newData2.push(obs);
             });
             return newData2;
@@ -229,9 +229,11 @@
         }
 
         // set yScale domain based on data selected
-        yScale.domain([0, d3.max(stack(data), function(d) { return d3.max(d, function(d) { return d[1]; }); })]).nice();
-        updateAxis();
-        // console.log(stack(data));
+        if(keys.length > 0) {
+            yScale.domain([0, d3.max(stack(data), function(d) { return d3.max(d, function(d) { return d[1]; }); })]).nice();
+            updateAxis();
+        }
+
         var layer = d3.select("#areaChart svg g").selectAll(".area")
             .data(stack(data), function(d) { return d.key; });
 
