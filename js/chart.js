@@ -1,7 +1,7 @@
 (function() {
     var pymChild = null;
 
-    var margin = {left: 35, top: 30, right: 0, bottom: 18};
+    var margin = {left: 35, top: 30, right: 10, bottom: 18};
 
     // var selectedState;
     var opioidsData;
@@ -465,6 +465,8 @@
                 .style("height", menuFullHeights[menu] + "px");
             // d3.select(menu + ".selected").classed("hidden", true);
             d3.select(menu + " .arrowImage").classed("rotate180", false);
+
+            pymChild.sendHeight();
         }
         else {
             d3.select(menu + ".selectionDiv").classed("closed", true);
@@ -473,6 +475,8 @@
                 .style("height", "0px");
             // d3.select(menu + ".selected").classed("hidden", false);
             d3.select(menu + " .arrowImage").classed("rotate180", true);
+
+            pymChild.sendHeight();
         }
     }
 
