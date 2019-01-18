@@ -19,11 +19,15 @@ text {
     display: inline-block;
 }
 
-/*.hidden {
+.hidden {
     display: none;
-    height: 0;
+    /*height: 0;*/
 }
-*/
+
+.notSelected {
+    opacity: 0.5;
+}
+
 h1 {
     font-weight: normal;
     font-size: 30px;
@@ -344,13 +348,17 @@ label[for="perCapita"] {
 .chartLegend {
     /*float: left;*/
     /*padding: 5px 0px 10px 20px;*/
-    width: 370px;
+    /*width: 370px;*/
     margin-bottom: 20px;
 }
 
 .legendGroup {
-    width: 120px;
+    width: 130px;
     display: inline-block;
+}
+
+.allDrugs .legendGroup.naloxone {
+    width: 100px;
 }
 
 .legendRow {
@@ -365,7 +373,7 @@ label[for="perCapita"] {
     font-size: 13px;
     float: left;
     display: inline-block;
-    width: calc(100% - 20px);
+    /*width: calc(100% - 20px);*/
 }
 
 .legendSquare {
@@ -376,9 +384,19 @@ label[for="perCapita"] {
     float: left;
 }
 
+.brandGeneric .legendSquare {
+    margin-left: 10px;
+}
+
 @media screen and (max-width: 769px) {
     .chartLegend {
         width: 100%;
+    }
+}
+
+@media screen and (max-width: 396px) {
+    .legendGroup {
+        margin-top: 10px;
     }
 }
 

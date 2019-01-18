@@ -281,6 +281,13 @@
     function excludeSegment(a, b) {
         return a.x === b.x && (a.x === xScale(minDate) || a.x === xScale(new Date(2018, 0, 1)));
     }
+
+    function updateLegend(legend, drugs) {
+        d3.selectAll(legend + " .legendGroup").classed("notSelected", true);
+        drugs.forEach(function(d) {
+            d3.select(legend + " .legendGroup." + d).classed("notSelected", false);
+        });
+    }
     //////////////////////////////////////////////////////////////////////////
 
     //////////////////////// GET USER SELECTIONS /////////////////////////////
@@ -322,6 +329,23 @@
         }
 
         updateChart(metric, geo, timeUnit, newKeys);
+        console.log(drugs);
+        // update legend based on selections
+        if(drugs.length === 0) {
+            d3.selectAll(".chartLegend").classed("hidden", true);
+        }
+        else {
+            if(brandgeneric) {
+                updateLegend(".brandGeneric", drugs);
+                d3.select(".brandGeneric.chartLegend").classed("hidden", false);
+                d3.select(".allDrugs.chartLegend").classed("hidden", true);
+            }
+            else {
+                updateLegend(".allDrugs", drugs);
+                d3.select(".brandGeneric.chartLegend").classed("hidden", true);
+                d3.select(".allDrugs.chartLegend").classed("hidden", false);
+            }
+        }
 
         // build an object of user selections to highlight selections with
         var userSelections = {};
