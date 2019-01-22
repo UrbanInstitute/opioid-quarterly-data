@@ -348,7 +348,7 @@ label[for="perCapita"] {
 .chartLegend {
     /*float: left;*/
     /*padding: 5px 0px 10px 20px;*/
-    /*width: 370px;*/
+    min-height: 57px;
     margin-bottom: 20px;
 }
 
