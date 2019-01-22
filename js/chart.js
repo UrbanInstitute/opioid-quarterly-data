@@ -331,21 +331,17 @@
 
         updateChart(metric, geo, timeUnit, newKeys);
         // console.log(drugs);
+
         // update legend based on selections
-        if(drugs.length === 0) {
-            d3.selectAll(".chartLegend").classed("hidden", true);
+        if(brandgeneric) {
+            updateLegend(".brandGeneric", drugs);
+            d3.select(".brandGeneric.chartLegend").classed("hidden", false);
+            d3.select(".allDrugs.chartLegend").classed("hidden", true);
         }
         else {
-            if(brandgeneric) {
-                updateLegend(".brandGeneric", drugs);
-                d3.select(".brandGeneric.chartLegend").classed("hidden", false);
-                d3.select(".allDrugs.chartLegend").classed("hidden", true);
-            }
-            else {
-                updateLegend(".allDrugs", drugs);
-                d3.select(".brandGeneric.chartLegend").classed("hidden", true);
-                d3.select(".allDrugs.chartLegend").classed("hidden", false);
-            }
+            updateLegend(".allDrugs", drugs);
+            d3.select(".brandGeneric.chartLegend").classed("hidden", true);
+            d3.select(".allDrugs.chartLegend").classed("hidden", false);
         }
 
         // build an object of user selections to highlight selections with
