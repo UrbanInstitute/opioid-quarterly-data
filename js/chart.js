@@ -3,6 +3,12 @@
 
     var margin = {left: 35, top: 30, right: 10, bottom: 18};
 
+    // modify d3's SI units to replace the "G" with "B" for billions in tick labels
+    var BILLIONS = function(val){
+        var b = d3.format(".2s")(val);
+        return(b.replace(/G/,"B"));
+    }
+
     // var selectedState;
     var opioidsData;
     var minDate;
@@ -109,7 +115,6 @@
 
         // save height of div for when filter menus open/close on small screens
         originalHeight = d3.select(".main").node().getBoundingClientRect().height;
-        console.log(originalHeight);
     }
 
     // parse data and draw plots
@@ -168,7 +173,7 @@
 
         svg.append("g")
             .attr("class", "axis axis--y")
-            .call(d3.axisLeft(yScale).tickSize(-width).tickFormat(d3.format(".2s")));
+            .call(d3.axisLeft(yScale).tickSize(-width).tickFormat(BILLIONS));
 
         // add label for y-axis
         svg.append("text")
@@ -275,7 +280,7 @@
         else {
             d3.select("#areaChart .axis.axis--y")
                 .transition()
-                .call(d3.axisLeft(yScale).tickSize(-width).tickFormat(d3.format(".2s")));
+                .call(d3.axisLeft(yScale).tickSize(-width).tickFormat(BILLIONS));
         }
     }
 
