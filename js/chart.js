@@ -109,6 +109,7 @@
 
         // save height of div for when filter menus open/close on small screens
         originalHeight = d3.select(".main").node().getBoundingClientRect().height;
+        console.log(originalHeight);
     }
 
     // parse data and draw plots
@@ -329,7 +330,7 @@
         }
 
         updateChart(metric, geo, timeUnit, newKeys);
-        console.log(drugs);
+        // console.log(drugs);
         // update legend based on selections
         if(drugs.length === 0) {
             d3.selectAll(".chartLegend").classed("hidden", true);
@@ -523,7 +524,9 @@
         pymChild.sendHeight();
     }
 
-    d3.select(".filterBtn").on("click", function() { d3.select("section.userSelections").classed("slideIn", true); });
+    // functions for opening/closing selection menu panel on small screens
+    d3.select(".filterBtn").on("click", function() { d3.select("section.userSelections").classed("slideIn", true);
+                                                     adjustMainDivHeight(); });
 
     function toggleFilters() {
         var filtersAreClosed = d3.select("section.userSelections").classed("hidden");
@@ -536,7 +539,10 @@
         }
     }
 
-    d3.select(".closeBtn").on("click", function() { d3.select("section.userSelections").classed("slideIn", false); });
+    d3.select(".closeBtn").on("click", function() { d3.select("section.userSelections").classed("slideIn", false);
+                                                    d3.select(".main").style("height", originalHeight + "px");
+                                                    pymChild.sendHeight();
+                                                    });
 
     /////////////////////// checkbox functions //////////////////////////
     function checkAllDrugBoxes() {
