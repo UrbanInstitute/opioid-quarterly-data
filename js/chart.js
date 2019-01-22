@@ -106,6 +106,11 @@
 
         if (containerWidth <= 769) {
             closeAllMenus();
+
+            // explicitly set height of .main div so we can transition it when filter menus are opened/closed
+            var onLoadMainHeight = d3.select(".main").node().getBoundingClientRect().height;
+            d3.select(".main")
+                .style("height", onLoadMainHeight + "px");
         }
 
         // This is calling an updated height.
@@ -146,7 +151,7 @@
 
         fullKeys = data.columns.slice(4);
 
-        pymChild = new pym.Child({renderCallback: drawGraphic });
+        pymChild = new pym.Child({renderCallback: drawGraphic, polling: 50});
 
         // pymChild.onMessage("selectionChanged", updateChart);
     });
@@ -486,25 +491,39 @@
 
     function toggleMenu(menu) {
         var menuIsClosed = d3.select(menu + ".selectionDiv").classed("closed");
+        var currentMainHeight = d3.select(".main").node().getBoundingClientRect().height;
+        var currentMainWidth = d3.select(".main").node().getBoundingClientRect().width;
 
         if(menuIsClosed) {
+            // first adjust main div height to final height (if on a small screen)
+            if(currentMainWidth < 768) {
+                d3.select(".main")
+                    .transition(500)
+                    .style("height", currentMainHeight + menuFullHeights[menu] + "px");
+            }
+
+            // then open the menu and adjust selectionDiv height
             d3.select(menu + ".selectionDiv").classed("closed", false);
             d3.select(menu + ".selectionDiv")
                 .transition(500)
-                .style("height", menuFullHeights[menu] + "px")
-                .on("end", adjustMainDivHeight);
+                .style("height", menuFullHeights[menu] + "px");
+                // .on("end", adjustMainDivHeight);
             d3.select(menu + " .arrowImage").classed("rotate180", false);
 
         }
         else {
+            if(currentMainWidth < 768) {
+                d3.select(".main")
+                    .transition(500)
+                    .style("height", currentMainHeight - menuFullHeights[menu] + "px");
+            }
+
             d3.select(menu + ".selectionDiv").classed("closed", true);
             d3.select(menu + ".selectionDiv")
                 .transition(500)
-                .style("height", "0px")
-                .on("end", adjustMainDivHeight);
+                .style("height", "0px");
+                // .on("end", adjustMainDivHeight);
             d3.select(menu + " .arrowImage").classed("rotate180", true);
-
-            pymChild.sendHeight();
         }
     }
 
@@ -514,11 +533,11 @@
 
         if(selectionMenuHeight > originalHeight) {
             // set .main height to selection menu height
-            d3.select(".main").style("height", selectionMenuHeight + "px");
+            d3.select(".main").transition().style("height", selectionMenuHeight + "px");
         }
         else {
             // set .main height back to original height
-            d3.select(".main").style("height", originalHeight + "px");
+            d3.select(".main").transition().style("height", originalHeight + "px");
         }
         // console.log("iframe height:", mainheight);
         // console.log("selection menu height:", selectionMenuHeight);
@@ -541,8 +560,8 @@
     }
 
     d3.select(".closeBtn").on("click", function() { d3.select("section.userSelections").classed("slideIn", false);
-                                                    d3.select(".main").style("height", originalHeight + "px");
-                                                    pymChild.sendHeight();
+                                                    d3.select(".main").transition().style("height", originalHeight + "px");
+                                                    // pymChild.sendHeight();
                                                     });
 
     /////////////////////// checkbox functions //////////////////////////
