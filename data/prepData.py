@@ -3,7 +3,17 @@
 """
 prepData.py
 
-Script to reshape source data into structure needed for d3
+Script to reshape source data into structure needed for d3 for the Opioids 
+project page
+
+Inputs:
+    csv file of quarterly data
+    csv file of quarterly data broken out by generic vs brand name
+    csv file of annual data
+    csv file of annual data broken out by generic vs brand name
+    
+Output:
+    opioids_data.csv
 
 Created on Tue Nov 27 11:39:19 2018
 
@@ -31,11 +41,23 @@ def qtrToDate(df):
     month = (df.quarter * 3) - 2
     return pd.to_datetime(str(df.year) + "-" + str(month) + "-01", format="%Y-%m-%d")
 
+# filter out years not needed for chart
+def filterDates(df, year):
+    df = df[df['year'] >= year]
+    return df
+
+# add columns with values equal to zero to dataframe
+def addCols(df, columnList):
+    for col in columnList:
+        df[col] = 0
+        
+        
+        
 # filter out years prior to 2010
-total_qtr = total_qtr[total_qtr['year'] >= 2010]
-generic_brand_qtr = generic_brand_qtr[generic_brand_qtr['year'] >= 2010]
-total_yr = total_yr[total_yr['year'] >= 2010]
-generic_brand_yr = generic_brand_yr[generic_brand_yr['year'] >= 2010]
+total_qtr = filterDates(total_qtr, 2010)
+generic_brand_qtr = filterDates(generic_brand_qtr, 2010)
+total_yr = filterDates(total_yr, 2010)
+generic_brand_yr = filterDates(generic_brand_yr, 2010)
 
 total_qtr.replace({'drugtype': 'bup'}, 'buprenorphine', inplace = True)
 total_qtr.rename(columns = {'imprx': 'rx'}, inplace = True)
@@ -49,12 +71,9 @@ total_qtr_long = pd.melt(total_qtr, id_vars=['state', 'drugtype', 'temporal_unit
 total_qtr_long['metric'] = np.where(total_qtr_long['metric'].str.contains('percap'), 
               total_qtr_long['metric'].str.split('_').str.get(1) + "_percap", total_qtr_long['metric'])
 total_qtr_final = total_qtr_long.pivot_table(index=['state', 'temporal_unit', 'date', 'metric'], columns = 'drugtype', values = 'value')
-total_qtr_final['buprenorphine_brand'] = 0
-total_qtr_final['buprenorphine_generic'] = 0
-total_qtr_final['naloxone_brand'] = 0
-total_qtr_final['naloxone_generic'] = 0
-total_qtr_final['naltrexone_brand'] = 0
-total_qtr_final['naltrexone_generic'] = 0
+addCols(total_qtr_final, ['buprenorphine_brand', 'buprenorphine_generic', 
+                          'naloxone_brand', 'naloxone_generic', 'naltrexone_brand',
+                          'naltrexone_generic'])
 
 
 generic_brand_qtr.replace({'drugtype': 'bup'}, 'buprenorphine', inplace = True)
@@ -68,11 +87,10 @@ generic_brand_qtr_long = pd.melt(generic_brand_qtr, id_vars=['state', 'drugtype'
 generic_brand_qtr_long['drug_genericind'] = generic_brand_qtr_long['drugtype'] + "_" + generic_brand_qtr_long['genericind']
 generic_brand_qtr_long['metric'] = generic_brand_qtr_long['metric'] + "_gb"
 generic_brand_qtr_final = generic_brand_qtr_long.pivot_table(index=['state', 'temporal_unit', 'date', 'metric'], columns = 'drug_genericind', values = 'value')
-generic_brand_qtr_final['buprenorphine'] = 0
-generic_brand_qtr_final['naloxone'] = 0
-generic_brand_qtr_final['naltrexone'] = 0
+addCols(generic_brand_qtr_final, ['buprenorphine', 'naloxone', 'naltrexone'])
 
-quarterly_final = pd.concat([total_qtr_final, generic_brand_qtr_final]).reset_index()
+
+quarterly_final = pd.concat([total_qtr_final, generic_brand_qtr_final], sort=False).reset_index()
 quarterly_final.sort_values(by = ['state', 'date', 'metric'], inplace = True)
 
 total_yr.replace({'drugtype': 'bup'}, 'buprenorphine', inplace = True)
@@ -87,12 +105,9 @@ total_yr_long = pd.melt(total_yr, id_vars=['state', 'drugtype', 'temporal_unit',
 total_yr_long['metric'] = np.where(total_yr_long['metric'].str.contains('percap'),
              total_yr_long['metric'].str.split('_').str.get(1) + "_percap", total_yr_long['metric'])
 total_yr_final = total_yr_long.pivot_table(index=['state', 'temporal_unit', 'date', 'metric'], columns = 'drugtype', values = 'value')
-total_yr_final['buprenorphine_brand'] = 0
-total_yr_final['buprenorphine_generic'] = 0
-total_yr_final['naloxone_brand'] = 0
-total_yr_final['naloxone_generic'] = 0
-total_yr_final['naltrexone_brand'] = 0
-total_yr_final['naltrexone_generic'] = 0
+addCols(total_yr_final, ['buprenorphine_brand', 'buprenorphine_generic',
+                         'naloxone_brand', 'naloxone_generic', 
+                         'naltrexone_brand', 'naltrexone_generic'])
 
 generic_brand_yr.replace({'drugtype': 'bup'}, 'buprenorphine', inplace = True)
 generic_brand_yr.rename(columns = {'imprx': 'rx'}, inplace = True)
@@ -105,16 +120,13 @@ generic_brand_yr_long = pd.melt(generic_brand_yr, id_vars=['state', 'drugtype', 
 generic_brand_yr_long['drug_genericind'] = generic_brand_yr_long['drugtype'] + "_" + generic_brand_yr_long['genericind']
 generic_brand_yr_long['metric'] = generic_brand_yr_long['metric'] + "_gb"
 generic_brand_yr_final = generic_brand_yr_long.pivot_table(index=['state', 'temporal_unit', 'date', 'metric'], columns = 'drug_genericind', values = 'value')
-generic_brand_yr_final['buprenorphine'] = 0
-generic_brand_yr_final['naloxone'] = 0
-generic_brand_yr_final['naltrexone'] = 0
+addCols(generic_brand_yr_final, ['buprenorphine', 'naloxone', 'naltrexone'])
 
-yr_final = pd.concat([total_yr_final, generic_brand_yr_final]).reset_index()
+
+yr_final = pd.concat([total_yr_final, generic_brand_yr_final], sort=False).reset_index()
 yr_final.sort_values(by = ['state', 'date', 'metric'], inplace = True)
 
 final = pd.concat([quarterly_final, yr_final])
-#final.rename(columns={'drugtype': 'drug'}, inplace = True)
 final.replace({'state': 'XX'}, 'National', inplace = True)
-# probably also want to adjust metric names but wait on final labels before doing this
 
 final.to_csv('opioids_data.csv', index = False)
