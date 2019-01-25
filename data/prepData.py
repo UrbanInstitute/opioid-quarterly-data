@@ -94,14 +94,14 @@ addCols(total_final, ['buprenorphine_brand', 'buprenorphine_generic',
                           'naltrexone_generic'])
 
 generic_brand_long = pd.melt(generic_brand, id_vars=['state', 'drugtype', 'temporal_unit', 'date', 'genericind'],
-                                 value_vars = ['rx', 'adjmedamt'], var_name = 'metric')
+        value_vars = ['rx', 'adjmedamt'], var_name = 'metric')
 generic_brand_long['drug_genericind'] = generic_brand_long['drugtype'] + "_" + generic_brand_long['genericind']
 generic_brand_long['metric'] = generic_brand_long['metric'] + "_gb"
 generic_brand_final = generic_brand_long.pivot_table(index=['state', 'temporal_unit', 'date', 'metric'], columns = 'drug_genericind', values = 'value')
 addCols(generic_brand_final, ['buprenorphine', 'naloxone', 'naltrexone'])
 
 
-final = pd.concat([total_final, generic_brand_final]).reset_index()
+final = pd.concat([total_final, generic_brand_final], sort = False).reset_index()
 final.sort_values(by = ['temporal_unit', 'state', 'date', 'metric'], inplace = True)
 final.replace({'state': 'XX'}, 'National', inplace = True)
 
