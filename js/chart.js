@@ -109,8 +109,7 @@
 
             // explicitly set height of .main div so we can transition it when filter menus are opened/closed
             var onLoadMainHeight = d3.select(".main").node().getBoundingClientRect().height;
-            d3.select(".main")
-                .style("height", onLoadMainHeight + "px");
+            d3.select(".main").style("height", onLoadMainHeight + "px");
         }
 
         // This is calling an updated height.
@@ -302,7 +301,7 @@
     //////////////////////////////////////////////////////////////////////////
 
     //////////////////////// GET USER SELECTIONS /////////////////////////////
-    d3.selectAll("input[name='perCapita']").on("change", getSelections);
+    // d3.selectAll("input[name='perCapita']").on("change", getSelections);
     d3.selectAll("input[name='metric']").on("change", getSelections);
     d3.select("input#all").on("change", handleCheckboxLogic);
     d3.selectAll("input.drugSuboption").on("change", getSelections);
@@ -311,7 +310,7 @@
     d3.selectAll("input[name='timeUnit']").on("change", getSelections);
 
     function getSelections() {
-        var perCapita = getPerCapita();
+        // var perCapita = getPerCapita();
         var metric = getMetric();
         var drugs = getDrug();
         var brandgeneric = d3.select("#brandGenericToggle").classed("on");
@@ -319,10 +318,10 @@
         var timeUnit = getTimeUnit();
 
         // get metric
-        if(perCapita) {
-            metric = metric + "_percap";
-        }
-        else if(brandgeneric) {
+        // if(perCapita) {
+        //     metric = metric + "_percap";
+        // }
+        if(brandgeneric) {
             metric = metric + "_gb";
         }
 
@@ -356,7 +355,7 @@
 
         // build an object of user selections to highlight selections with
         var userSelections = {};
-        userSelections.percap = perCapita;
+        // userSelections.percap = perCapita;
         userSelections.metric = metric.split("_")[0];
         userSelections.drugs = drugs.map(function(d) { return capitalizeWord(d); });
         userSelections.state = geo;
@@ -365,13 +364,13 @@
 
         // if per capita is checked, need to disable the generic/brand checkboxes
         // and vice versa
-        perCapita ? d3.selectAll(".brandGenericSelection").classed("disabled", true) : d3.selectAll(".brandGenericSelection").classed("disabled", false);
+        // perCapita ? d3.selectAll(".brandGenericSelection").classed("disabled", true) : d3.selectAll(".brandGenericSelection").classed("disabled", false);
     }
 
     function highlightSelections(selections) {
         d3.selectAll("label").classed("selected", false);
 
-        if(selections.percap) d3.select("label[for='perCapita']").classed("selected", true);
+        // if(selections.percap) d3.select("label[for='perCapita']").classed("selected", true);
 
         d3.select("label[for='" + selections.metric + "']").classed("selected", true);
 
@@ -403,16 +402,16 @@
             d3.select("#brandGenericToggle").classed("off", true);
 
             // allow per capita checkbox to be selected
-            d3.select("input[name='perCapita']").property("disabled", false);
-            d3.select("label[for='perCapita']").classed("disabled", false);
+            // d3.select("input[name='perCapita']").property("disabled", false);
+            // d3.select("label[for='perCapita']").classed("disabled", false);
         }
         else if(d3.select("#brandGenericToggle").classed("off")) {
             d3.select("#brandGenericToggle").classed("on", true);
             d3.select("#brandGenericToggle").classed("off", false);
 
             // disable per capita checkbox
-            d3.select("input[name='perCapita']").property("disabled", true);
-            d3.select("label[for='perCapita']").classed("disabled", true);
+            // d3.select("input[name='perCapita']").property("disabled", true);
+            // d3.select("label[for='perCapita']").classed("disabled", true);
         }
 
         getSelections();
@@ -436,9 +435,9 @@
         return selectedDrugs;
     }
 
-    function getPerCapita() {
-        return d3.select("#perCapita").property("checked");
-    }
+    // function getPerCapita() {
+    //     return d3.select("#perCapita").property("checked");
+    // }
 
     function getMetric() {
         return d3.selectAll("input[name='metric']:checked").property("value");
