@@ -128,6 +128,7 @@
                 temporal_unit: d.temporal_unit,
                 date: parseDate(d.date),
                 metric: d.metric,
+                futurerevision: d.futurerevision,
                 // all_percap: +d.all_percap,
                 // all_total: +d.all_total,
                 buprenorphine: +d.buprenorphine,
@@ -146,9 +147,9 @@
         if (error) throw error;
 
         opioidsData = data;
-        // console.log(opioidsData);
+        console.log(opioidsData);
 
-        fullKeys = data.columns.slice(4);
+        fullKeys = data.columns.slice(5);
 
         pymChild = new pym.Child({renderCallback: drawGraphic, polling: 50});
 

@@ -83,21 +83,23 @@ generic_brand = generic_brand[generic_brand.drugtype != 'all']
 generic_brand.drop(['year', 'quarter'], axis = 1, inplace = True)
 
 # reshape dataframes
-total_long = pd.melt(total, id_vars=['state', 'drugtype', 'temporal_unit', 'date'],
+total_long = pd.melt(total, id_vars=['state', 'drugtype', 'temporal_unit', 'date', 'futurerevision'],
         value_vars = ['rx', 'adjmedamt', 'percap_rx', 'percap_adjmedamt'],
         var_name = 'metric')
 total_long['metric'] = np.where(total_long['metric'].str.contains('percap'), 
               total_long['metric'].str.split('_').str.get(1) + "_percap", total_long['metric'])
-total_final = total_long.pivot_table(index=['state', 'temporal_unit', 'date', 'metric'], columns = 'drugtype', values = 'value')
+total_long.loc[((total_long['metric'].str.contains('percap')) & (total_long['futurerevision'] == 'per capita')), 'futurerevision'] = 'yes' 
+total_long.loc[((~total_long['metric'].str.contains('percap')) & (total_long['futurerevision'] == 'per capita')), 'futurerevision'] = 'no' 
+total_final = total_long.pivot_table(index=['state', 'temporal_unit', 'date', 'metric', 'futurerevision'], columns = 'drugtype', values = 'value')
 addCols(total_final, ['buprenorphine_brand', 'buprenorphine_generic', 
                           'naloxone_brand', 'naloxone_generic', 'naltrexone_brand',
                           'naltrexone_generic'])
 
-generic_brand_long = pd.melt(generic_brand, id_vars=['state', 'drugtype', 'temporal_unit', 'date', 'genericind'],
+generic_brand_long = pd.melt(generic_brand, id_vars=['state', 'drugtype', 'temporal_unit', 'date', 'genericind', 'futurerevision'],
         value_vars = ['rx', 'adjmedamt'], var_name = 'metric')
 generic_brand_long['drug_genericind'] = generic_brand_long['drugtype'] + "_" + generic_brand_long['genericind']
 generic_brand_long['metric'] = generic_brand_long['metric'] + "_gb"
-generic_brand_final = generic_brand_long.pivot_table(index=['state', 'temporal_unit', 'date', 'metric'], columns = 'drug_genericind', values = 'value')
+generic_brand_final = generic_brand_long.pivot_table(index=['state', 'temporal_unit', 'date', 'metric', 'futurerevision'], columns = 'drug_genericind', values = 'value')
 addCols(generic_brand_final, ['buprenorphine', 'naloxone', 'naltrexone'])
 
 
