@@ -72,8 +72,6 @@
         .y0(function(d) { return yScale(d[0]); })
         .y1(function(d) { return yScale(d[1]); });
 
-    // var clickEvent = isIE() ? "mouseup" : "click";
-
     function drawGraphic(containerWidth) {
         // set up chart dimensions
         if (containerWidth == undefined || isNaN(containerWidth) || containerWidth > 960) {
@@ -102,7 +100,8 @@
         createChart("areaChart", "National", "quarterly", "adjmedamt_gb", width, height);
 
         // store menu heights in object so can transition opening/closing them
-        getMenuHeights();
+        // only do this after the first time page is loaded so that the menus function properly if window gets resized
+        (Object.keys(menuFullHeights).length === 0) && getMenuHeights();
 
         if (containerWidth <= 769) {
             closeAllMenus();
@@ -147,7 +146,7 @@
         if (error) throw error;
 
         opioidsData = data;
-        console.log(opioidsData);
+        // console.log(opioidsData);
 
         fullKeys = data.columns.slice(5);
 
