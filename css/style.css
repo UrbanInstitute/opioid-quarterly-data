@@ -71,12 +71,13 @@ hr {
 
 section.userSelections {
     width: 222px;
-    margin-right: 30px;
+    margin-right: 50px;
     float: left;
 }
 
 section.chart {
     float: left;
+    width: calc(100% - 280px);
 }
 
 path.buprenorphine {
@@ -400,6 +401,7 @@ label[for="perCapita"] {
     }
 }
 
+p.source,
 p.notes {
     font-size: 12px;
 }
