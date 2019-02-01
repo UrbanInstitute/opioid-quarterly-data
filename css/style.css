@@ -292,7 +292,7 @@ label[for="perCapita"] {
 .toggle {
     background-image: url(../img/on-off.png);
     background-repeat: no-repeat;
-    width: 63px;
+    width: 78px;
     height: 26px;
     border-radius: 20px;
     background-size: cover;
@@ -308,7 +308,7 @@ label[for="perCapita"] {
 }*/
 
 .toggle.on {
-    background-position: -35px 0px;
+    background-position: -45px 0px;
     background-color: #1696d2;
 }
 
@@ -317,7 +317,7 @@ label[for="perCapita"] {
 }
 
 .toggle.off {
-    background-position: 2px 0px;
+    background-position: 6px 0px;
     background-color: #696969;
 }
 
