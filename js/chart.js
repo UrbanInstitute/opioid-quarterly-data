@@ -303,7 +303,7 @@
     //////////////////////// GET USER SELECTIONS /////////////////////////////
     // d3.selectAll("input[name='perCapita']").on("change", getSelections);
     d3.selectAll("input[name='metric']").on("change", getSelections);
-    d3.select("input#all").on("change", handleCheckboxLogic);
+    // d3.select("input#all").on("change", handleCheckboxLogic);
     d3.selectAll("input.drugSuboption").on("change", getSelections);
     d3.selectAll("#brandGenericToggle").on("click", toggleSwitch);
     d3.select("#stateDropdown").on("change", getSelections);
@@ -374,27 +374,27 @@
 
         d3.select("label[for='" + selections.metric + "']").classed("selected", true);
 
-        if(selections.drugs.length === 3) {
-            d3.select("label[for='all']").classed("selected", true);
-        }
-        else {
+        // if(selections.drugs.length === 3) {
+        //     d3.select("label[for='all']").classed("selected", true);
+        // }
+        // else {
             selections.drugs.forEach(function(drug) {
                 d3.select("label[for='" + drug.toLowerCase() + "']").classed("selected", true);
             })
-        }
+        // }
 
         d3.select("label[for='" + selections.time + "']").classed("selected", true);
     }
 
-    function handleCheckboxLogic() {
-        var checkedAll = d3.select("input#all").property("checked");
+    // function handleCheckboxLogic() {
+    //     var checkedAll = d3.select("input#all").property("checked");
 
-        // if "all drugs" selected, all three suboptions should be checked
-        if(checkedAll) checkAllDrugBoxes();
-        else uncheckAllDrugBoxes();
+    //     // if "all drugs" selected, all three suboptions should be checked
+    //     if(checkedAll) checkAllDrugBoxes();
+    //     else uncheckAllDrugBoxes();
 
-        getSelections();
-    }
+    //     getSelections();
+    // }
 
     function toggleSwitch() {
         if(d3.select("#brandGenericToggle").classed("on")) {
@@ -424,8 +424,8 @@
         // console.log(checkedDrugs);
 
         // trigger whether "All" should be checked based on number of individual drugs selected
-        if(checkedDrugs.length < 3) uncheckBox("#all");  // document.querySelectorAll("input#all").indeterminate = true;
-        else if(checkedDrugs.length === 3) checkBox("#all")
+        // if(checkedDrugs.length < 3) uncheckBox("#all");
+        // else if(checkedDrugs.length === 3) checkBox("#all")
 
         // get list of drugs selected
         for(var i = 0; i < checkedDrugs.length; i++) {
@@ -564,25 +564,25 @@
                                                     });
 
     /////////////////////// checkbox functions //////////////////////////
-    function checkAllDrugBoxes() {
-        checkBox("#buprenorphine");
-        checkBox("#naltrexone");
-        checkBox("#naloxone");
-    }
+    // function checkAllDrugBoxes() {
+    //     checkBox("#buprenorphine");
+    //     checkBox("#naltrexone");
+    //     checkBox("#naloxone");
+    // }
 
-    function uncheckAllDrugBoxes() {
-        uncheckBox("#buprenorphine");
-        uncheckBox("#naltrexone");
-        uncheckBox("#naloxone");
-    }
+    // function uncheckAllDrugBoxes() {
+    //     uncheckBox("#buprenorphine");
+    //     uncheckBox("#naltrexone");
+    //     uncheckBox("#naloxone");
+    // }
 
-    function checkBox(id) {
-        d3.select(id).property("checked", true);
-    }
+    // function checkBox(id) {
+    //     d3.select(id).property("checked", true);
+    // }
 
-    function uncheckBox(id) {
-        d3.select(id).property("checked", false);
-    }
+    // function uncheckBox(id) {
+    //     d3.select(id).property("checked", false);
+    // }
 
     /////////////////////// string cleaning functions ////////////////////
     function capitalizeWord(word) {

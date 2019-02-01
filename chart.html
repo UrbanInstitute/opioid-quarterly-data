@@ -60,37 +60,34 @@
                 </div>
                 <div class="drugSelection checkboxes selectionDiv">
                     <div class="selection">
-                        <ul class="outerList">
-                            <li>
-                                <label class="btnContainer selected" for="all">All drugs
+                        <p class="checklistName">Drug name</p>
+<!--                                 <label class="btnContainer selected" for="all">All drugs
                                     <input type="checkbox" id="all" name="drug" value="all" checked>
                                     <span class="flatCheckbox"></span>
+                                </label> -->
+                        <ul class="innerList">
+                            <li>
+                                <label class="btnContainer selected" for="buprenorphine">Buprenorphine
+                                    <input type="checkbox" id="buprenorphine" name="drug" value="buprenorphine" class="drugSuboption" checked>
+                                    <span class="flatCheckbox"></span>
                                 </label>
-                                <ul class="innerList">
-                                    <li>
-                                        <label class="btnContainer" for="buprenorphine">Buprenorphine
-                                            <input type="checkbox" id="buprenorphine" name="drug" value="buprenorphine" class="drugSuboption" checked>
-                                            <span class="flatCheckbox"></span>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label class="btnContainer" for="naloxone">Naloxone
-                                            <input type="checkbox" id="naloxone" name="drug" value="naloxone" class="drugSuboption" checked>
-                                            <span class="flatCheckbox"></span>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label class="btnContainer" for="naltrexone">Naltrexone
-                                            <input type="checkbox" id="naltrexone" name="drug" value="naltrexone" class="drugSuboption" checked>
-                                            <span class="flatCheckbox"></span>
-                                        </label>
-                                    </li>
-                                </ul>
+                            </li>
+                            <li>
+                                <label class="btnContainer selected" for="naloxone">Naloxone
+                                    <input type="checkbox" id="naloxone" name="drug" value="naloxone" class="drugSuboption" checked>
+                                    <span class="flatCheckbox"></span>
+                                </label>
+                            </li>
+                            <li>
+                                <label class="btnContainer selected" for="naltrexone">Naltrexone
+                                    <input type="checkbox" id="naltrexone" name="drug" value="naltrexone" class="drugSuboption" checked>
+                                    <span class="flatCheckbox"></span>
+                                </label>
                             </li>
                         </ul>
                     </div>
                     <div class="brandGenericSelection selection">
-                        <div class="brandGenericLabel">Brand name & generic</div>
+                        <div class="brandGenericLabel">Generic and brand name</div>
                         <div class="toggle on" id="brandGenericToggle"></div>
                     </div>
                 </div>
