@@ -2,6 +2,7 @@
     var pymChild = null;
 
     var margin = {left: 35, top: 30, right: 16, bottom: 18};
+    var chartWidth;
 
     // modify d3's SI units to replace the "G" with "B" for billions in tick labels
     var BILLIONS = function(val){
@@ -81,6 +82,8 @@
         // var width = Math.min(containerWidth, 200 - margin["left"] - margin["right"]),
         var width = (containerWidth > 769) ? containerWidth - 270 - margin["left"] - margin["right"] : containerWidth - margin["left"] - margin["right"],
             height = width * 0.75 - margin["top"] - margin["bottom"];
+
+        chartWidth = width;
 
         if(containerWidth < 450) {
             height = width * 0.85 - margin["top"] - margin["bottom"];  // make chart slightly taller on small screens
@@ -273,18 +276,16 @@
     }
 
     function updateAxis(percap) {
-        var width = d3.select("#areaChart g").node().getBoundingClientRect().width;
-
         // if viewing per capita data, don't use SI units on y-axis
         if(percap) {
             d3.select("#areaChart .axis.axis--y")
                 .transition()
-                .call(d3.axisLeft(yScale).tickSize(-width));
+                .call(d3.axisLeft(yScale).tickSize(-chartWidth));
         }
         else {
             d3.select("#areaChart .axis.axis--y")
                 .transition()
-                .call(d3.axisLeft(yScale).tickSize(-width).tickFormat(BILLIONS));
+                .call(d3.axisLeft(yScale).tickSize(-chartWidth).tickFormat(BILLIONS));
         }
     }
 
