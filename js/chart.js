@@ -1,7 +1,7 @@
 (function() {
     var pymChild = null;
 
-    var margin = {left: 35, top: 30, right: 10, bottom: 18};
+    var margin = {left: 35, top: 30, right: 16, bottom: 18};
 
     // modify d3's SI units to replace the "G" with "B" for billions in tick labels
     var BILLIONS = function(val){
