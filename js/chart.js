@@ -100,7 +100,7 @@
         minDate = d3.min(opioidsData, function(d) { return d.date; });
 
         // initial view loads National data
-        createChart("areaChart", "National", "quarterly", "adjmedamt_gb", width, height);
+        createChart("areaChart", "National", "quarterly", "rx_gb", width, height);
 
         // store menu heights in object so can transition opening/closing them
         // only do this after the first time page is loaded so that the menus function properly if window gets resized
@@ -187,7 +187,7 @@
             .attr("class", "yaxisLabel")
             .attr("x", -margin["left"])
             .attr("y", -margin["top"] + 12)
-            .text("Dollars")
+            .text("Number of prescriptions")
 
         var layer = svg.selectAll(".area")
             .data(stack(data))
