@@ -198,6 +198,10 @@ path.naltrexone_generic {
         width: 100%;
     }
 
+    h2.chartTitle {
+        width: calc(100% - 90px);
+    }
+
     .filterBtn {
         display: block;
     }
