@@ -261,7 +261,7 @@
         }
 
         // update y-axis label if needed
-        metric === "adjmedamt" ? d3.select(".yaxisLabel").text("Dollars") : d3.select(".yaxisLabel").text("Number of prescriptions")
+        metric.indexOf("adjmedamt") > -1 ? d3.select(".yaxisLabel").text("Dollars") : d3.select(".yaxisLabel").text("Number of prescriptions")
 
         var layer = d3.select("#areaChart svg g").selectAll(".area")
             .data(stack(data), function(d) { return d.key; });
