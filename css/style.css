@@ -494,6 +494,10 @@ select option[value=""] {
     border: 1px solid #d2d2d2;
 }
 
+label[for=buprenorphine] .flatCheckbox {
+    margin-top: 5px;
+}
+
 .flatCheckbox:after {
     content: "";
     position: absolute;
