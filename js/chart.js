@@ -168,7 +168,7 @@
         // set yScale domain based on data selected
         yScale.domain([0, d3.max(stack(data), function(d) { return d3.max(d, function(d) { return d[1]; }); })]).nice();
 
-        var xAxis = d3.axisBottom(xScale).ticks(d3.timeMonth.every(3));
+        var xAxis = d3.axisBottom(xScale).ticks(d3.timeMonth.every(3)).tickSizeOuter(0);
         if(width + margin.left + margin.right < 400) xAxis.tickFormat(d3.timeFormat("'%y"));
 
         var svg = d3.select("#" + parentElement)

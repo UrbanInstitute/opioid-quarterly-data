@@ -63,9 +63,13 @@ generic_brand_qtr['date'] = generic_brand_qtr.apply(qtrToDate, axis = 1)
 total_yr['date'] = pd.to_datetime(total_yr['year'].astype(str), format="%Y")
 generic_brand_yr['date'] = pd.to_datetime(generic_brand_yr['year'].astype(str), format="%Y")
 
-# filter out 2018 Q2 data - researchers decided to suppress this (Feb 1)
-total_qtr = total_qtr[total_qtr['date'] != pd.to_datetime("2018-04-01", format="%Y-%m-%d")]
-generic_brand_qtr = generic_brand_qtr[generic_brand_qtr['date'] != pd.to_datetime("2018-04-01", format="%Y-%m-%d")]
+# filter out 2018 Q3 data - researchers decided to suppress this (March 25)
+total_qtr = total_qtr[total_qtr['date'] != pd.to_datetime("2018-07-01", format="%Y-%m-%d")]
+generic_brand_qtr = generic_brand_qtr[generic_brand_qtr['date'] != pd.to_datetime("2018-07-01", format="%Y-%m-%d")]
+
+# filter out 2018 annual data - researchers decided to suppress this (March 25)
+total_yr = total_yr[total_yr['year'] != 2018]
+generic_brand_yr = generic_brand_yr[generic_brand_yr['year'] != 2018]
 
 # concatenate generic/brand and non-generic/brand datasets
 total = pd.concat([total_qtr, total_yr])
