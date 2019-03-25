@@ -40,10 +40,10 @@ def addCols(df, columnList):
         df[col] = 0
         
 # todo: turn this into command line arguments
-total_qtr_filename = 'source/Quarterly_bydrug_2018Q2.csv'
-generic_brand_qtr_filename = 'source/Quarterly_bydrug_bygeneric_2018Q2.csv'
-total_yr_filename = 'source/Annual_bydrug_2018Q2.csv'
-generic_brand_yr_filename = 'source/Annual_bydrug_bygeneric_2018Q2.csv'
+total_qtr_filename = 'source/Quarterly_bydrug_2018Q3.csv'
+generic_brand_qtr_filename = 'source/Quarterly_bydrug_bygeneric_2018Q3.csv'
+total_yr_filename = 'source/Annual_bydrug_2018Q3.csv'
+generic_brand_yr_filename = 'source/Annual_bydrug_bygeneric_2018Q3.csv'
 
 # read in data
 total_qtr = pd.read_csv(total_qtr_filename)
