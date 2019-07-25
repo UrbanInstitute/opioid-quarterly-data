@@ -1,7 +1,7 @@
 (function() {
     var pymChild = null;
 
-    var margin = {left: 35, top: 30, right: 16, bottom: 18};
+    var margin = {left: 40, top: 30, right: 16, bottom: 18};
     var chartWidth;
 
     // modify d3's SI units to replace the "G" with "B" for billions in tick labels
@@ -249,6 +249,7 @@
             });
 
             // also add a superscript to 2018 in annual series
+            // https://stackoverflow.com/questions/46006369/d3-v4-get-the-value-of-the-each-tick-present-on-an-axis
             d3.selectAll(".axis--x .tick text")
                 .nodes()
                 .map(function(t) {

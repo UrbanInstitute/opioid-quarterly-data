@@ -40,10 +40,10 @@ def addCols(df, columnList):
         df[col] = 0
         
 # todo: turn this into command line arguments
-total_qtr_filename = 'source/Quarterly_bydrug_2018Q3.csv'
-generic_brand_qtr_filename = 'source/Quarterly_bydrug_bygeneric_2018Q3.csv'
-total_yr_filename = 'source/Annual_bydrug_2018Q3.csv'
-generic_brand_yr_filename = 'source/Annual_bydrug_bygeneric_2018Q3.csv'
+total_qtr_filename = 'source/Quarterly_bydrug_2018Q4[1].csv'
+generic_brand_qtr_filename = 'source/Quarterly_bydrug_bygeneric_2018Q4[1].csv'
+total_yr_filename = 'source/Annual_bydrug_2018Q4[1].csv'
+generic_brand_yr_filename = 'source/Annual_bydrug_bygeneric_2018Q4[1].csv'
 
 # read in data
 total_qtr = pd.read_csv(total_qtr_filename)
@@ -63,13 +63,9 @@ generic_brand_qtr['date'] = generic_brand_qtr.apply(qtrToDate, axis = 1)
 total_yr['date'] = pd.to_datetime(total_yr['year'].astype(str), format="%Y")
 generic_brand_yr['date'] = pd.to_datetime(generic_brand_yr['year'].astype(str), format="%Y")
 
-# filter out 2018 Q3 data - researchers decided to suppress this (March 25)
-total_qtr = total_qtr[total_qtr['date'] != pd.to_datetime("2018-07-01", format="%Y-%m-%d")]
-generic_brand_qtr = generic_brand_qtr[generic_brand_qtr['date'] != pd.to_datetime("2018-07-01", format="%Y-%m-%d")]
-
-# filter out 2018 annual data - researchers decided to suppress this (March 25)
-total_yr = total_yr[total_yr['year'] != 2018]
-generic_brand_yr = generic_brand_yr[generic_brand_yr['year'] != 2018]
+# filter out 2018 Q4 data - researchers decided to suppress this (July 23)
+total_qtr = total_qtr[total_qtr['date'] != pd.to_datetime("2018-10-01", format="%Y-%m-%d")]
+generic_brand_qtr = generic_brand_qtr[generic_brand_qtr['date'] != pd.to_datetime("2018-10-01", format="%Y-%m-%d")]
 
 # concatenate generic/brand and non-generic/brand datasets
 total = pd.concat([total_qtr, total_yr])
@@ -115,4 +111,4 @@ final = pd.concat([total_final, generic_brand_final], sort = False).reset_index(
 final.sort_values(by = ['temporal_unit', 'state', 'date', 'metric'], inplace = True)
 final.replace({'state': 'XX'}, 'National', inplace = True)
 
-final.to_csv('opioids_data.csv', index = False)
+#final.to_csv('opioids_data.csv', index = False)
