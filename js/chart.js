@@ -318,7 +318,8 @@
 
     //////////////////////// GET USER SELECTIONS /////////////////////////////
     d3.selectAll("input[name='perCapita']").on("change", getSelections);
-    d3.selectAll("input[name='metric']").on("change", getSelections);
+    // d3.selectAll("input[name='metric']").on("change", getSelections);   comment out for now until per capita data can be shown for both spending and prescriptions
+    d3.selectAll("input[name='metric']").on("change", showPerCap);
     // d3.select("input#all").on("change", handleCheckboxLogic);
     d3.selectAll("input.drugSuboption").on("change", getSelections);
     d3.selectAll("#brandGenericToggle").on("click", toggleSwitch);
@@ -384,7 +385,8 @@
         perCapita ? d3.selectAll(".brandGenericSelection").classed("disabled", true) : d3.selectAll(".brandGenericSelection").classed("disabled", false);
         // also need to disable the ability to select quarterly data (for now)
         perCapita ? d3.select("label.btnContainer[for='quarterly']").classed("disabled", true) : d3.select("label.btnContainer[for='quarterly']").classed("disabled", false);
-
+        // also need to disable the ability to choose spending data (for now)
+        perCapita ? d3.select("label.btnContainer[for='adjmedamt']").classed("disabled", true) : d3.select("label.btnContainer[for='adjmedamt']").classed("disabled", false);
     }
 
     function highlightSelections(selections) {
@@ -445,15 +447,20 @@
 
     // function to only allow per capita to be selected for annual data - hopefully a temporary function
     function showPerCap() {
-        // if user selects annual data not broken out by brand/generic, activate the per capita checkbox
-        if((d3.selectAll("input[name='timeUnit']:checked").property("value") === "annual") && d3.select("#brandGenericToggle").classed("off")) {
-            d3.select("input[name='perCapita']").property("disabled", false);
-            d3.select("label[for='perCapita']").classed("disabled", false);
+        // don't activate the per capita checkbox if user selects quarterly data
+        // or if the brand/generic is selected
+        // or if spending is selected
+        // if user selects annual prescription data not broken out by brand/generic, activate the per capita checkbox
+        if((d3.selectAll("input[name='timeUnit']:checked").property("value") === "quarterly") ||
+            d3.select("#brandGenericToggle").classed("on") ||
+            d3.selectAll("input[name='metric']:checked").property("value") === "adjmedamt") {
+            d3.select("input[name='perCapita']").property("disabled", true);
+            d3.select("label[for='perCapita']").classed("disabled", true);
     }
         // else, don't activate the per capita checkbox
         else {
-            d3.select("input[name='perCapita']").property("disabled", true);
-            d3.select("label[for='perCapita']").classed("disabled", true);
+            d3.select("input[name='perCapita']").property("disabled", false);
+            d3.select("label[for='perCapita']").classed("disabled", false);
         }
 
         getSelections();
