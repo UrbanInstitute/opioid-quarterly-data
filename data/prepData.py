@@ -111,4 +111,4 @@ final = pd.concat([total_final, generic_brand_final], sort = False).reset_index(
 final.sort_values(by = ['temporal_unit', 'state', 'date', 'metric'], inplace = True)
 final.replace({'state': 'XX'}, 'National', inplace = True)
 
-#final.to_csv('opioids_data.csv', index = False)
+final.to_csv('opioids_data.csv', index = False)
