@@ -40,10 +40,10 @@ def addCols(df, columnList):
         df[col] = 0
         
 # todo: turn this into command line arguments
-total_qtr_filename = 'source/Quarterly_bydrug_2018Q4[1].csv'
-generic_brand_qtr_filename = 'source/Quarterly_bydrug_bygeneric_2018Q4[1].csv'
-total_yr_filename = 'source/Annual_bydrug_2018Q4[1].csv'
-generic_brand_yr_filename = 'source/Annual_bydrug_bygeneric_2018Q4[1].csv'
+total_qtr_filename = 'source/Quarterly_bydrug_2019Q1.csv'
+generic_brand_qtr_filename = 'source/Quarterly_bydrug_bygeneric_2019Q1.csv'
+total_yr_filename = 'source/Annual_bydrug_2019Q1.csv'
+generic_brand_yr_filename = 'source/Annual_bydrug_bygeneric_2019Q1.csv'
 
 # read in data
 total_qtr = pd.read_csv(total_qtr_filename)
@@ -64,8 +64,8 @@ total_yr['date'] = pd.to_datetime(total_yr['year'].astype(str), format="%Y")
 generic_brand_yr['date'] = pd.to_datetime(generic_brand_yr['year'].astype(str), format="%Y")
 
 # filter out 2018 Q4 data - researchers decided to suppress this (July 23)
-total_qtr = total_qtr[total_qtr['date'] != pd.to_datetime("2018-10-01", format="%Y-%m-%d")]
-generic_brand_qtr = generic_brand_qtr[generic_brand_qtr['date'] != pd.to_datetime("2018-10-01", format="%Y-%m-%d")]
+#total_qtr = total_qtr[total_qtr['date'] != pd.to_datetime("2018-10-01", format="%Y-%m-%d")]
+#generic_brand_qtr = generic_brand_qtr[generic_brand_qtr['date'] != pd.to_datetime("2018-10-01", format="%Y-%m-%d")]
 
 # concatenate generic/brand and non-generic/brand datasets
 total = pd.concat([total_qtr, total_yr])
@@ -88,7 +88,7 @@ generic_brand.drop(['year', 'quarter'], axis = 1, inplace = True)
 
 # reshape dataframes
 total_long = pd.melt(total, id_vars=['state', 'drugtype', 'temporal_unit', 'date', 'futurerevision'],
-        value_vars = ['rx', 'adjmedamt', 'percap_rx', 'percap_adjmedamt'],
+        value_vars = ['rx', 'adjmedamt', 'unadjmedamt', 'percap_rx', 'percap_adjmedamt', 'percap_unadjmedamt'],
         var_name = 'metric')
 total_long['metric'] = np.where(total_long['metric'].str.contains('percap'), 
               total_long['metric'].str.split('_').str.get(1) + "_percap", total_long['metric'])
@@ -100,7 +100,7 @@ addCols(total_final, ['buprenorphine_brand', 'buprenorphine_generic',
                           'naltrexone_generic'])
 
 generic_brand_long = pd.melt(generic_brand, id_vars=['state', 'drugtype', 'temporal_unit', 'date', 'genericind', 'futurerevision'],
-        value_vars = ['rx', 'adjmedamt'], var_name = 'metric')
+        value_vars = ['rx', 'adjmedamt', 'unadjmedamt'], var_name = 'metric')
 generic_brand_long['drug_genericind'] = generic_brand_long['drugtype'] + "_" + generic_brand_long['genericind']
 generic_brand_long['metric'] = generic_brand_long['metric'] + "_gb"
 generic_brand_final = generic_brand_long.pivot_table(index=['state', 'temporal_unit', 'date', 'metric', 'futurerevision'], columns = 'drug_genericind', values = 'value')

@@ -149,7 +149,6 @@
         if (error) throw error;
 
         opioidsData = data;
-        // console.log(opioidsData);
 
         fullKeys = data.columns.slice(5);
 
@@ -336,7 +335,7 @@
 
         // get metric
         if(perCapita) {
-            metric = metric + "_percap";
+            metric = "percap_" + metric;
         }
         if(brandgeneric) {
             metric = metric + "_gb";
