@@ -335,12 +335,12 @@
 
         // get metric
         if(perCapita) {
-            metric = "percap_" + metric;
+            metric = metric + "_percap";
         }
         if(brandgeneric) {
             metric = metric + "_gb";
         }
-
+console.log(metric);
         // build array of keys
         var newKeys = [];
         if(drugs.length < 3) {
