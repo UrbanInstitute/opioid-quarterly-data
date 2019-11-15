@@ -322,8 +322,7 @@
     d3.selectAll("input.drugSuboption").on("change", getSelections);
     d3.selectAll("#brandGenericToggle").on("click", toggleSwitch);
     d3.select("#stateDropdown").on("change", getSelections);
-    // d3.selectAll("input[name='timeUnit']").on("change", getSelections);  comment out for now until per capita data can be shown for both annual and quarterly series
-    d3.selectAll("input[name='timeUnit']").on("change", showPerCap);
+    d3.selectAll("input[name='timeUnit']").on("change", getSelections);  //comment out for now until per capita data can be shown for both annual and quarterly series
 
     function getSelections() {
         var perCapita = getPerCapita();
@@ -382,7 +381,7 @@
         // and vice versa
         perCapita ? d3.selectAll(".brandGenericSelection").classed("disabled", true) : d3.selectAll(".brandGenericSelection").classed("disabled", false);
         // also need to disable the ability to select quarterly data (for now)
-        perCapita ? d3.select("label.btnContainer[for='quarterly']").classed("disabled", true) : d3.select("label.btnContainer[for='quarterly']").classed("disabled", false);
+        // perCapita ? d3.select("label.btnContainer[for='quarterly']").classed("disabled", true) : d3.select("label.btnContainer[for='quarterly']").classed("disabled", false);
         // also need to disable the ability to choose spending data (for now)
         // perCapita ? d3.select("label.btnContainer[for='adjmedamt']").classed("disabled", true) : d3.select("label.btnContainer[for='adjmedamt']").classed("disabled", false);
     }
@@ -422,14 +421,14 @@
             d3.select("#brandGenericToggle").classed("off", true);
 
             // allow per capita checkbox to be selected - only if user selects Annual data
-            if(getTimeUnit() === "annual") {
+            // if(getTimeUnit() === "annual") {
                 d3.select("input[name='perCapita']").property("disabled", false);
                 d3.select("label[for='perCapita']").classed("disabled", false);
-            }
-            else {
-                d3.select("input[name='perCapita']").property("disabled", true);
-                d3.select("label[for='perCapita']").classed("disabled", true);
-            }
+            // }
+            // else {
+                // d3.select("input[name='perCapita']").property("disabled", true);
+                // d3.select("label[for='perCapita']").classed("disabled", true);
+            // }
         }
         else if(d3.select("#brandGenericToggle").classed("off")) {
             d3.select("#brandGenericToggle").classed("on", true);
@@ -444,24 +443,24 @@
     }
 
     // function to only allow per capita to be selected for annual data - hopefully a temporary function
-    function showPerCap() {
-        // don't activate the per capita checkbox if user selects quarterly data
-        // or if the brand/generic is selected
-        // or if spending is selected
-        // if user selects annual prescription data not broken out by brand/generic, activate the per capita checkbox
-        if((d3.selectAll("input[name='timeUnit']:checked").property("value") === "quarterly") ||
-            d3.select("#brandGenericToggle").classed("on")) {
-            d3.select("input[name='perCapita']").property("disabled", true);
-            d3.select("label[for='perCapita']").classed("disabled", true);
-    }
-        // else, don't activate the per capita checkbox
-        else {
-            d3.select("input[name='perCapita']").property("disabled", false);
-            d3.select("label[for='perCapita']").classed("disabled", false);
-        }
+    // function showPerCap() {
+    //     // don't activate the per capita checkbox if user selects quarterly data
+    //     // or if the brand/generic is selected
+    //     // or if spending is selected
+    //     // if user selects annual prescription data not broken out by brand/generic, activate the per capita checkbox
+    //     if((d3.selectAll("input[name='timeUnit']:checked").property("value") === "quarterly") ||
+    //         d3.select("#brandGenericToggle").classed("on")) {
+    //         d3.select("input[name='perCapita']").property("disabled", true);
+    //         d3.select("label[for='perCapita']").classed("disabled", true);
+    // }
+    //     // else, don't activate the per capita checkbox
+    //     else {
+    //         d3.select("input[name='perCapita']").property("disabled", false);
+    //         d3.select("label[for='perCapita']").classed("disabled", false);
+    //     }
 
-        getSelections();
-    }
+    //     getSelections();
+    // }
 
     function getDrug() {
         var selectedDrugs = [];
