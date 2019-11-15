@@ -249,22 +249,22 @@
 
             // also add a superscript to 2018 in annual series
             // https://stackoverflow.com/questions/46006369/d3-v4-get-the-value-of-the-each-tick-present-on-an-axis
-            d3.selectAll(".axis--x .tick text")
-                .nodes()
-                .map(function(t) {
-                    if(t.innerHTML === "2018") t.innerHTML = "2018<tspan dy='-4'>b</tspan>";
-                });
+            // d3.selectAll(".axis--x .tick text")
+            //     .nodes()
+            //     .map(function(t) {
+            //         if(t.innerHTML === "2018") t.innerHTML = "2018<tspan dy='-4'>b</tspan>";
+            //     });
         }
         else if(timeUnit === "quarterly") {
             // if time unit is quarterly, show all ticks
             ticks.style("opacity", 1);
 
             // remove supercript from 2018
-            d3.selectAll(".axis--x .tick text")
-                .nodes()
-                .map(function(t) {
-                    if(t.innerHTML === '2018<tspan dy="-4">b</tspan>') t.innerHTML = "2018";
-                });
+            // d3.selectAll(".axis--x .tick text")
+            //     .nodes()
+            //     .map(function(t) {
+            //         if(t.innerHTML === '2018<tspan dy="-4">b</tspan>') t.innerHTML = "2018";
+            //     });
         }
 
         // set yScale domain and y-axis tick formats based on data selected
